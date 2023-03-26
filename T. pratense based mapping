@@ -1,1 +1,31 @@
+# QC
+# The following command was run once for each sample
+fastqc AACHLGWM5-7931-01-49-01_S1_L001_R1_001.fastq AACHLGWM5-7931-01-49-01_S1_L001_R2_001.fastq -o /Volumes/archive/userdata/student_users/olivernewman/2023/Illumina_downloads_2023/fastQC/
+
+# MultiQC
+multiqc /Volumes/archive/userdata/student_users/olivernewman/2023/Illumina_downloads_2023/fastQC_10_samples_2023/
+
+# Trimming and pairing fastq files
+# The following command was run once for each sample
+java -jar /usr/local/bin/trimmomatic.jar PE /Volumes/archive/userdata/student_users/olivernewman/2023/Illumina_downloads_2023/OG7931-641472834_fastqs/AACHLGWM5-7931-01-49-01_L1-ds.e02e8eb6bd8a439c90d33e767a56659e/AACHLGWM5-7931-01-49-01_S1_L001_R1_001.fastq /Volumes/archive/userdata/student_users/olivernewman/2023/Illumina_downloads_2023/OG7931-641472834_fastqs/AACHLGWM5-7931-01-49-01_L1-ds.e02e8eb6bd8a439c90d33e767a56659e/AACHLGWM5-7931-01-49-01_S1_L001_R2_001.fastq Sample_1_R1_Paired_trimmed.fastq Sample_1_R1_Unpaired_trimmed.fastq Sample_1_R2_Paired_trimmed.fastq Sample_1_R2_Unpaired_trimmed.fastq ILLUMINACLIP:adapters.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+
+
 # Indexing T. reference genome
+STAR --runMode genomeGenerate --genomeDir STAR_ref_index_T_pratense/ --genomeFastaFiles data/GCF_020283565.1_RefSeq/GCF_020283565.1_ARS_RC_1.1_T_pratense_ref_genome.fa --sjdbGTFfile data/GCF_020283565.1_RefSeq/RefSeq_T_pratense.gtf --genomeSAindexNbases 13 --runThreadN 24
+
+# Mapping paired-trimmed fastq files to indexed reference genome
+# The following command was run once for each sample
+STAR --runMode alignReads --genomeDir /Volumes/userdata/student_users/olivernewman/2023/Reference_genome/ncbi_dataset_Trifolium_pratense_reference_genome/STAR_ref_index_T_pratense/ --outSAMtype BAM SortedByCoordinate --readFilesIn Paired_and_Unpaired_trimmed/Sample_10_R1_Paired_trimmed.fastq Paired_and_Unpaired_trimmed/Sample_10_R2_Paired_trimmed.fastq --runThreadN 72 --outFileNamePrefix /Volumes/userdata/student_users/olivernewman/2023/Illumina_downloads_2023/Mapped_to_T_pratense_genome/ --outFilterMultimapNmax 10
+
+
+# Counting reads per annotated genes in reference genome using BAM files generated from the previous step
+featureCounts -a Reference_genomes/ncbi_dataset_Trifolium_pratense_reference_genome/data/GCF_020283565.1_RefSeq/RefSeq_T_pratense.gtf -o FeatureCounts_10_samples_T_pratense_counts.txt -T 64 Illumina_downloads_2023/Mapped_to_T_pratense_genome/*.bam -p -M --fraction
+
+# Sorting BAM files 
+samtools sort Sample_1_Aligned.sortedByCoord.out.bam
+
+# Indexing and sorting T. pratense .gtf file
+samtools index RefSeq_T_pratense.gtf
+samtools sort RefSeq_T_pratense.gtf
+
+
