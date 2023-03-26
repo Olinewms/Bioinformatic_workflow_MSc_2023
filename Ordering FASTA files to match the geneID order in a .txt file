@@ -1,0 +1,136 @@
+# This is the full workflow
+
+cat Sig_up_isoforms_copy.fasta | head
+cat Sig_up_isoforms_copy.fasta | sed -e 's/(TRINITY_*_[\d\w]+_*)_*/\1/g' | head -5
+cat Sig_up_isoforms_copy.fasta | sed -e 's/(TRINITY_*_[\d\w]+_*)_*/$1/g' | head -5
+cat Sig_up_isoforms_copy.fasta | sed -e 's/(^>TRINITY_*_[\d\w]+_*)_*/$1/g' | head -5
+cat Sig_up_isoforms_copy.fasta | sed -e 's/(^>TRINITY_*_[\d\w]+_*)_*/\1/g' | head -5
+cat Sig_up_isoforms_copy.fasta | sed -e 's/(^>TRINITY_*_[\d\w]+_*)_.*/$1/g' | head -5
+cat Sig_up_isoforms_copy.fasta | sed -e 's/(^>TRINITY_*_*_*)_.*/$1/g' | head -5
+cat Sig_up_isoforms_copy.fasta | seqkit seq | head -10
+seqkit --help
+seqkit seq --help
+seqkit --help
+seqkit replace --help
+seqkit --help
+seqkit 
+seqkit -h
+seqkit --version
+seqkit -version
+seqkit -v
+seqkit
+seqkit version
+seqkit grep -h
+cat Sig_up_isoforms_copy.fasta | paste - - | head
+cat Sig_up_isoforms_copy.fasta | paste - - | cut -f 1
+cat Sig_up_isoforms_copy.fasta | seqkit fx2tab 
+seqkit fx2tab 
+seqkit fx2tab -h
+seqkit seq  -h
+cat Sig_up_isoforms_copy.fasta | seqkit seq  -n -i -s 
+ls
+head Trinity_sig_results_6sample_DeNovo/TRINITY_sig_up_isoforms.txt
+head -5 Trinity_sig_results_6sample_DeNovo/TRINITY_sig_up_isoforms.txt > top5.Sigup.txt
+cat top5.Sigup.txt 
+list=S(cat top5.Sigup.txt)
+list=$(cat top5.Sigup.txt)
+cat $list 
+for i in $(cat list); do echo ${i}; done
+for i in $(cat top5.Sigup.txt); do echo ${i}; done
+for i in $(cat top5.Sigup.txt); do seqkit grep -p ${i} Sig_up_isoforms_copy.fasta; done
+cat Sig_up_isoforms_copy.fasta | seqkit seq  -n -i -s 
+cat Sig_up_isoforms_copy.fasta | seqkit seq  -n -i -s > Sig_up_isoforms_copy2.fasta
+for i in $(cat top5.Sigup.txt); do seqkit grep -p ${i} Sig_up_isoforms_copy2.fasta; done
+for i in $(cat top5.Sigup.txt); do seqkit grep -p ${i} Sig_up_isoforms_copy2.fasta; head -1: done
+for i in $(cat top5.Sigup.txt); do seqkit grep -p ${i} Sig_up_isoforms_copy2.fasta; head -1; done
+for i in $(cat top5.Sigup.txt); do seqkit grep -p ${i} Sig_up_isoforms_copy2.fasta; grep -i '^>'; done
+seqkit grep -h
+for i in $(cat top5.Sigup.txt); do seqkit grep -p '${i}' Sig_up_isoforms_copy2.fasta; grep -i '^>'; done
+for i in $(cat top5.Sigup.txt); do base=$i; seqkit grep -p '$base' Sig_up_isoforms_copy2.fasta; done
+cat top5.Sigup.txt 
+head -2 top5.Sigup.txt > top2.Sigup.txt 
+cat top2.Sigup.txt 
+for i in $(cat top2.Sigup.txt); do base=$i; seqkit grep -p '$base' Sig_up_isoforms_copy2.fasta; done
+for i in $(cat top2.Sigup.txt); do base=$i; seqkit grep -p '${base}' Sig_up_isoforms_copy2.fasta; done
+for i in $(cat top2.Sigup.txt); do base=$i; seqkit grep -p '${i}' Sig_up_isoforms_copy2.fasta; done
+for i in $(cat top2.Sigup.txt); do base=$i; seqkit grep -p ${i} Sig_up_isoforms_copy2.fasta; done
+for i in $(cat top2.Sigup.txt); do base=$i; seqkit grep -p ${i} Sig_up_isoforms_copy2.fasta; wc -l ; done
+seqkit -h
+parallel -j 1 "sekqit grep -f {} Sig_up_isoforms_copy2.fasta" :::: top2.Sigup.txt 
+parallel -j 1 "seqkit grep -f {} Sig_up_isoforms_copy2.fasta" :::: top2.Sigup.txt 
+parallel --bibtex
+cat top2.Sigup.txt 
+seqkit grep -f {} Sig_up_isoforms_copy2.fasta | head -1
+cat Sig_up_isoforms_copy2.fasta | head -1
+seqkit grep -p 'TRINITY_DN3854_c0_g1_i4' Sig_up_isoforms_copy2.fasta 
+parallel j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}'" :::: top2.Sigup.txt 
+parallel -j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}'" :::: top2.Sigup.txt 
+parallel -j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}' > top2.fasta" :::: top2.Sigup.txt 
+cat top2.fasta 
+rm top2.fasta 
+parallel -j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}' >> top2.fasta" :::: top2.Sigup.txt 
+cat top2.fasta 
+head top2.fasta 
+cat top2.fasta | grep -i '^>'
+parallel -j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}' > top5.fasta" :::: top5.Sigup.txt 
+cat top2.fasta | grep -i '^>'rm top5.fasta 
+rm top5.fasta 
+parallel -j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}' >> top5.fasta" :::: top5.Sigup.txt 
+cat top2.fasta | grep -i '^>'
+cat top5.fasta | grep -i '^>'
+tail top5.Sigup.txt 
+ls Trinity_sig_results_6sample_DeNovo/*,txt
+ls Trinity_sig_results_6sample_DeNovo/*.txt
+cat Trinity_sig_results_6sample_DeNovo/TRINITY_sig_up_isoforms_copy.txt 
+cat Trinity_sig_results_6sample_DeNovo/TRINITY_sig_up_isoforms.txt 
+parallel -j 1 "cat Sig_up_isoforms_copy2.fasta | seqkit grep -p '{}' >> top_all.fasta" :::: Trinity_sig_results_6sample_DeNovo/TRINITY_sig_up_isoforms.txt 
+tail top_all.fasta | grep -i '^>'
+cat top_all.fasta 
+cat top_all.fasta | grep -i '^>' | tail
+tail Trinity_sig_results_6sample_DeNovo/TRINITY_sig_up_isoforms.txt 
+seqkit grep -f Trinity_sig_results_6sample_DeNovo/TRINITY_sig_down_isoforms.txt /Volumes/scratch/brownfieldlab/Ollie/2023/trinity_de_novo_6_samples/Trinity.fasta -o TRINITY_sig_down_isoform_seq.fasta
+
+
+
+# This is when I sorted the sig_down_isoforms
+cd Trialling_Ayos_code/
+
+head 10 down_sig.fasta 
+head -10 down_sig.fasta 
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | sed -e 's/(^>TRINITY_*_*_*)_.*/$1/g' | head -5
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq | head -10
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | paste - - | cut -f 1
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit fx2tab
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
+list=$(cat TRINITY_sig_down_isoforms_copy.txt)
+cat $list
+for i in $(cat list); do echo ${i}; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do echo ${i}; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy.fasta; done
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
+cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s > TRINITY_sig_down_isoform_seqs_copy2.fasta 
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; head -1; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; grep -i '^>'; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p '${i}' TRINITY_sig_down_isoform_seqs_copy2.fasta; grep -i '^>'; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '$base' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+cat TRINITY_sig_down_isoforms_copy.txt 
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '$base' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '${base}' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '${i}' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; wc -l ; done
+parallel -j 1 "seqkit grep -f {} TRINITY_sig_down_isoform_seqs_copy2.fasta" :::: TRINITY_sig_down_isoforms_copy.txt 
+parallel --bibtex
+seqkit grep -f {} TRINITY_sig_down_isoform_seqs_copy2.fasta | head -1
+cat TRINITY_sig_down_isoform_seqs_copy2.fasta | head -1
+parallel -j 1 "cat TRINITY_sig_down_isoform_seqs_copy2.fasta | seqkit grep -p '{}' >> down_sig_all.fasta" :::: TRINITY_sig_down_isoforms_copy.txt
+ls -l
+tail -10 down_sig_all.fasta 
+tail down_sig_all.fasta | grep -i '^>'
+cat down_sig_all.fasta | grep -i '^>' | tail
+tail TRINITY_sig_down_isoforms_copy.txt
+
+
