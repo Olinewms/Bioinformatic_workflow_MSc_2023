@@ -94,8 +94,7 @@ seqkit grep -f Trinity_sig_results_6sample_DeNovo/TRINITY_sig_down_isoforms.txt 
 
 # This is when I sorted the sig_down_isoforms
 cd Trialling_Ayos_code/
-
-head 10 down_sig.fasta 
+ 
 head -10 down_sig.fasta 
 cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
 cat TRINITY_sig_down_isoform_seqs_copy.fasta | sed -e 's/(^>TRINITY_*_*_*)_.*/$1/g' | head -5
@@ -106,7 +105,6 @@ cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit fx2tab
 cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
 list=$(cat TRINITY_sig_down_isoforms_copy.txt)
 cat $list
-for i in $(cat list); do echo ${i}; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do echo ${i}; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy.fasta; done
 cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s
@@ -117,7 +115,6 @@ for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINI
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p '${i}' TRINITY_sig_down_isoform_seqs_copy2.fasta; grep -i '^>'; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '$base' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
 cat TRINITY_sig_down_isoforms_copy.txt 
-for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '$base' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '${base}' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '${i}' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; done
