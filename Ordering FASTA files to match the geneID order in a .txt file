@@ -18,19 +18,17 @@ cat TRINITY_sig_down_isoform_seqs_copy.fasta | seqkit seq  -n -i -s > TRINITY_si
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; head -1; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; grep -i '^>'; done
-for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do seqkit grep -p '${i}' TRINITY_sig_down_isoform_seqs_copy2.fasta; grep -i '^>'; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '$base' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
-cat TRINITY_sig_down_isoforms_copy.txt 
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '${base}' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p '${i}' TRINITY_sig_down_isoform_seqs_copy2.fasta; done
+
 for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; done
-for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; wc -l ; done
-parallel -j 1 "seqkit grep -f {} TRINITY_sig_down_isoform_seqs_copy2.fasta" :::: TRINITY_sig_down_isoforms_copy.txt 
-parallel --bibtex
-seqkit grep -f {} TRINITY_sig_down_isoform_seqs_copy2.fasta | head -1
+# for i in $(cat TRINITY_sig_down_isoforms_copy.txt); do base=$i; seqkit grep -p ${i} TRINITY_sig_down_isoform_seqs_copy2.fasta; wc -l ; done
+# parallel -j 1 "seqkit grep -f {} TRINITY_sig_down_isoform_seqs_copy2.fasta" :::: TRINITY_sig_down_isoforms_copy.txt 
+# seqkit grep -f {} TRINITY_sig_down_isoform_seqs_copy2.fasta | head -1
 cat TRINITY_sig_down_isoform_seqs_copy2.fasta | head -1
 parallel -j 1 "cat TRINITY_sig_down_isoform_seqs_copy2.fasta | seqkit grep -p '{}' >> down_sig_all.fasta" :::: TRINITY_sig_down_isoforms_copy.txt
-ls -l
+
 tail -10 down_sig_all.fasta 
 tail down_sig_all.fasta | grep -i '^>'
 cat down_sig_all.fasta | grep -i '^>' | tail
