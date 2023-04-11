@@ -26,5 +26,9 @@ TransDecoder.LongOrfs -t Trinity.fasta
   # Complete meain an AA string was found with a stop and start codon
   # 3prime_partial means that the 3prime region of the gene is incomplete
   # 5prime_partial means that the 5prime region of the gene is incomplete
+  
+  
+# Using longOrfs.pep and swissprot to get annotated gene IDs for all transcripts in 6-sample Trinity.fasta
+blastp ______________________ ______ ________
  
 
