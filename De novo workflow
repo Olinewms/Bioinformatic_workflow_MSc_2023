@@ -29,6 +29,7 @@ TransDecoder.LongOrfs -t Trinity.fasta
   
   
 # Using longOrfs.pep and swissprot to get annotated gene IDs for all transcripts in 6-sample Trinity.fasta
+  # The hits with the higher bitscore is the hit that you should select
 blastp ______________________ ______ ________
  
 
