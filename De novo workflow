@@ -34,3 +34,15 @@ TransDecoder.LongOrfs -t Trinity.fasta
 blastp -query swissprot/longest_orfs.pep -db swissprot/swissprot -out tinity_BLAST.out -outfmt 6 -max_target_seqs 5 -num_threads 20 -evalue 1e-5
 
 
+# Then I converted the longOrfs gff3 file to a gtf file using gffread
+
+# Then I used STAR to index the T. repens reference genome fasta with that gtf file
+
+
+
+
+# Then I will map my sample reads to this indexed genome, generating BAM files
+
+
+
+
