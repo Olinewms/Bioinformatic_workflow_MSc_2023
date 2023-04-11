@@ -17,3 +17,14 @@ seqkit grep -f TRINITY_sig_up_isoforms.txt trinity_de_novo_6_samples/Trinity.fas
 seqkit grep -f TRINITY_sig_down_isoforms.txt trinity_de_novo_6_samples/Trinity.fasta -o Trinity_sig_down_isoform_seqs.fasta
 
 
+
+# Using Transdecoder to begin annotation of Trinity.fasta
+# This was done in a conda environment with TransDecoder v-5.7.0 installed
+TransDecoder.LongOrfs -t Trinity.fasta
+
+  # Internal means an AA string was found without a stop nor start codon
+  # Complete meain an AA string was found with a stop and start codon
+  # 3prime_partial means that the 3prime region of the gene is incomplete
+  # 5prime_partial means that the 5prime region of the gene is incomplete
+ 
+
