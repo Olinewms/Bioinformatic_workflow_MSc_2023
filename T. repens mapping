@@ -11,12 +11,36 @@ extract_exons.py /Volumes/userdata/student_users/olivernewman/2023/Reference_gen
 unable to use --ss and --exon parameters
 ========================================================================================================================
 
-
 # cd to the /index directory
 # Index the reference genome and give it the name "TrR_v5_trans"
 hisat2-build -p 16 /Volumes/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta TrR_v5_trans
 
-
 # Map RNA reads to this indexed reference genome (TrR_v5_trans)
 # This has to be run for each of the 10 samples
 hisat2 -p 20 --dta -x index/TrR_v5_trans -1 ../Paired_and_Unpaired_trimmed/Paired_R1s/Sample_1_R1_Paired_trimmed.fastq -2 ../Paired_and_Unpaired_trimmed/Paired_R2s/Sample_1_R2_Paired_trimmed.fastq -S $mapped_to_TrR_v5_trans/Sample_1.sam
+
+# Sort SAM files into BAM files
+# This has to be run for each of the 10 samples
+samtools sort -@ 20 -o Sample_1.bam Sample_1.sam
+
+# Assembling transcripts
+# This has to be run for each of the 10 samples
+stringtie Sample_1.bam -l Sample_1 -p 20 -G ../../Reference_genomes/Trifolium_repens/Trifolium_repens/repens.fixed.gtf -o sample_1.gtf
+
+# Merging sample GTFs together
+# 'mergelist.txt' looks like so:
+#    sample_1.gtf
+#    ...
+#    sample_10.gtf
+stringtie --merge -p 20 -G ../../Reference_genomes/Trifolium_repens/Trifolium_repens/repens.fixed.gtf -o stringtie_repens_merged.gtf mergelist.txt
+
+
+
+
+
+
+
+
+
+
+
