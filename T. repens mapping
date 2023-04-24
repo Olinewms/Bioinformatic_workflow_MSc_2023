@@ -34,6 +34,19 @@ stringtie Sample_1.bam -l Sample_1 -p 20 -G ../../Reference_genomes/Trifolium_re
 #    sample_10.gtf
 stringtie --merge -p 20 -G ../../Reference_genomes/Trifolium_repens/Trifolium_repens/repens.fixed.gtf -o stringtie_repens_merged.gtf mergelist.txt
 
+# Check how many transcripts are in the new merged GTF
+cat stringtie_repens_merged.gtf | grep -v "^#" | awk '$3=="transcript" {print}' | wc -l
+
+# Compare the StringTie transcripts to known transcripts using gffcompare
+gffcompare -r ../../Reference_genomes/Trifolium_repens/Trifolium_repens/repens.fixed.gtf -G -o merged stringtie_repens_merged.gtf
+# Note:
+    68557 reference transcripts loaded.
+    23 duplicate reference transcripts discarded.
+    124578 query transfrags loaded.
+
+# Check the stats of the comparison
+# This will be relavent to write about (check what is written here https://bioinfo-dirty-jobs.github.io/rana2//lectures/07.rnaseq_hisat2/ when deciphering stats)
+cat GTF_stuff/merged.stats
 
 
 
