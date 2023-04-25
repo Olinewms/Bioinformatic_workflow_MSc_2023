@@ -43,14 +43,66 @@ gffcompare -r ../../Reference_genomes/Trifolium_repens/Trifolium_repens/repens.f
     68557 reference transcripts loaded.
     23 duplicate reference transcripts discarded.
     124578 query transfrags loaded.
-
-# Check the stats of the comparison
-# This will be relavent to write about (check what is written here https://bioinfo-dirty-jobs.github.io/rana2//lectures/07.rnaseq_hisat2/ when deciphering stats)
-cat GTF_stuff/merged.stats
-
+    # Check the stats of the comparison
+    # This will be relavent to write about (check what is written here https://bioinfo-dirty-jobs.github.io/rana2//lectures/07.rnaseq_hisat2/ when deciphering stats)
+    cat GTF_stuff/merged.stats
 
 
 
+# Then estimate the abundances using the estimate_abundance.sh script that was tailored to my samples
+# Make sure that each samples specific gtf file is contained in a separate sample directory; this is where the abundance outputs will be placed
+./Volumes/archive/userdata/student_users/olivernewman/2023/RNA_Seq_HISAT/estimate_abundance.sh
+
+========================================================================================================================
+
+## Now enter an R environment and load the required packages, then load the phenodata (which is a list of the samples (Sample_N1-5, Sample_P1-5, with "None" or "High" in the second column)
+> library(genefilter)
+> library(RSkittleBrewer)                                                                                                                                                                                   
+> library(devtools)
+> library(dplyr
+
+> pheno_data <- read.csv('/Volumes/archive/userdata/student_users/olivernewman/2023/RNA_Seq_HISAT/Original_GTFs_and_sampleInfo/Sample_pheno_info.csv')                                                      
+> head(pheno_data)
+> dim(pheno_data)
+
+# Load the abundance data from each 'estimate_abundance.sh' line
+> bg_F2_plants <- ballgown(dataDir='/Volumes/archive/userdata/student_users/olivernewman/2023/RNA_Seq_HISAT/mapped_to_TrR_v5_trans/GTF_stuff/abundance',samplePattern='Sample',pData=pheno_data)
+> class(bg_F2_plants)
+[1] "ballgown"
+
+> methods(class='ballgown')
+ [1] dirs            eexpr           expr            expr<-         
+ [5] geneIDs         geneNames       gexpr           iexpr          
+ [9] indexes         indexes<-       mergedDate      pData          
+[13] pData<-         sampleNames     seqnames        show           
+[17] structure       subset          texpr           transcriptIDs  
+[21] transcriptNames
+see '?methods' for accessing help and source code
+
+# Note here that I am more interested in gexpr (gene expression) and texpr (transcript expression) ^
+# which would be gexpr(bg_F2_plants) and texpr(bg_F2_plants)
+
+# Filter out transcripts with low variance
+> bg_F2_plants_filt <- subset(bg_F2_plants,"rowVars(texpr(bg_F2_plants))>1",genomesubset=TRUE)
+
+# Now call the DE analysis of transcripts and genes
+> de_transcripts <- stattest(bg_F2_plants_filt,feature='transcript',covariate='pigmentation',getFC=TRUE,meas='FPKM')
+> dim(de_transcripts)
+[1] 37354     5
+> head(de_transcripts)
+
+> de_genes <- stattest(bg_F2_plants_filt,feature='gene',covariate='pigmentation',getFC=TRUE,meas='FPKM')
+> dim(de_genes)
+[1] 23843     5
+
+# Get the geneNames from the origninal ballgown object (ballgown::)
+> de_transcripts = data.frame(geneNames=ballgown::geneNames(bg_F2_plants_filt),geneIDs=ballgown::geneIDs(bg_F2_plants_filt),de_transcripts)
+> head(de_transcripts)
+
+> bg_filt_table=texpr(bg_F2_plants_filt,'all')
+> gene_names=unique(bg_filt_table[,9:10])
+> head(gene_names)
+> feature=de_genes$id
 
 
 
