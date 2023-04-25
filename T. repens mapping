@@ -102,10 +102,45 @@ see '?methods' for accessing help and source code
 > bg_filt_table=texpr(bg_F2_plants_filt,'all')
 > gene_names=unique(bg_filt_table[,9:10])
 > head(gene_names)
-> feature=de_genes$id
+> features=de_genes$id
 
+> for (i in features) {query=gene_names%>%filter(gene_id==i & gene_name !='.'); n_hit=dim(query)[1];if (n_hit ==1){mapped_gene_names=append(mapped_gene_names,query$gene_name[[1]]) } else {mapped_gene_names=append(mapped_gene_names,'.')}}
+> de_genes$gene_name <- mapped_gene_names
+> de_genes <- de_genes[,c('feature','gene_name','id','fc','pval','qval')]
+> head(de_genes)
 
+# Generate log2FC's from the 'fc' column
+> de_transcripts[,'Log2fc'] <- log2(de_transcripts[,'fc'])
+> de_genes[,'Log2fc'] <- log2(de_genes[,'fc'])
 
+> de_transcripts <- de_transcripts[, c('geneNames','geneIDs','feature','id','fc','Log2fc','pval','qval')]                                                                   
+> de_genes <- de_genes[, c('feature','gene_name','id','fc','Log2fc','pval','qval')]
 
+> de_transcripts = arrange(de_transcripts,pval)
+> de_genes = arrange(de_genes,pval)
 
+> write.csv(de_transcripts,'de_transcripts_unfiltered_repens_ballgown.csv',row.names=FALSE)
+> write.csv(de_genes,'de_genes_unfiltered_repens_ballgown.csv',row.names=FALSE)
+
+> table(de_transcripts$qval < 0.05)
+FALSE  TRUE 
+37247   107
+
+> table(de_genes$qval < 0.05)
+FALSE  TRUE 
+23729   114 
+
+> de_transcripts %>% filter(qval < 0.05)
+
+> subset_transcripts <- subset(de_transcripts,de_transcripts$qval < 0.05)
+> subset_genes <- subset(de_genes,de_genes$qval < 0.05)
+
+> write.csv(subset_transcripts,'de_transcripts_filtered_repens_ballgown.csv',row.names=FALSE)
+> write.csv(subset_genes,'de_genes_filtered_repens_ballgown.csv',row.names=FALSE)
+
+> fpkm_transcripts <- texpr(bg_F2_plants_filt,'all') 
+> write.csv(fpkm_transcripts,'fpkm_transcripts_repens.csv',row.names=FALSE)                                                  
+
+> fpkm_genes <- gexpr(bg_F2_plants_filt)                                              
+> write.csv(fpkm_genes,'fpkm_genes_repens.csv',row.names=FALSE)
 
