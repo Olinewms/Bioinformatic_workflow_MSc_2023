@@ -110,11 +110,11 @@ see '?methods' for accessing help and source code
 > head(de_genes)
 
 # Generate log2FC's from the 'fc' column
-> de_transcripts[,'Log2fc'] <- log2(de_transcripts[,'fc'])
-> de_genes[,'Log2fc'] <- log2(de_genes[,'fc'])
+> de_transcripts[,'log2fc'] <- log2(de_transcripts[,'fc'])
+> de_genes[,'log2fc'] <- log2(de_genes[,'fc'])
 
-> de_transcripts <- de_transcripts[, c('geneNames','geneIDs','feature','id','fc','Log2fc','pval','qval')]                                                                   
-> de_genes <- de_genes[, c('feature','gene_name','id','fc','Log2fc','pval','qval')]
+> de_transcripts <- de_transcripts[, c('geneNames','geneIDs','feature','id','fc',log2fc','pval','qval')]                                                                   
+> de_genes <- de_genes[, c('feature','gene_name','id','fc','log2fc','pval','qval')]
 
 > de_transcripts = arrange(de_transcripts,pval)
 > de_genes = arrange(de_genes,pval)
