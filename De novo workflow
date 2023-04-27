@@ -35,11 +35,48 @@ blastp -query swissprot/longest_orfs.pep -db swissprot/swissprot -out tinity_BLA
 
 
 # Then I converted the longOrfs gff3 file to a gtf file using gffread
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+================= + ================= + ================= + ================= + ================= + =================
 
 # Blastn search using significantly DEGs seen when using de novo mapping and edgeR
 blastn -query /Volumes/archive/userdata/student_users/olivernewman/2023/Ordering_DEGS_trinity_fasta/sig_DE_all_edgeR_trinty_ordered.fasta -db nt -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 1 -num_threads 20 -evalue 1e-5 -out /Volumes/archive/userdata/student_users/olivernewman/2023/blast_searches/De_novo_edgeR_sig_DEGs.txt
+
+# The output of the blast search had some qseqids that were written more than once due to different alignments
+# I filtered out these duplicates by only taking the hit with the highest bitscore
+
+#!/usr/bin/env bash
+
+awk 'BEGIN { FS=OFS="\t"; prev_id=""; max_score=0; } { 
+        if ($1 != prev_id) { 
+            if (prev_id != "") { 
+                print max_line; 
+            } 
+            prev_id = $1; 
+            max_score = $12; 
+            max_line = $0; 
+        } else { 
+            if ($12 > max_score) { 
+                max_score = $12; 
+                max_line = $0; 
+            } 
+        } 
+    } END { 
+        print max_line; 
+    }' De_novo_edgeR_sig_DEGs.txt > output_file_filtered.tsv
+    
+# Then the the first column of output_file_filtered.tsv was taken and written to a new text file
+cat output_file_filtered.tsv | awk '{print $1}' > IDs_filtered_no_NAs.txt
+
+# The same was done for the original DEG data table (which was ordered in decending log2FCs)
+cat EdgeR_de_novo_SIG_dge_ordered.xls | awk '{print $1}' > qseqid_list_full.txt
+
+# Then these two files were compared, to find which qseqids (that are differentially expressed) didn't have a significant blastn hit
+diff IDs_filtered_no_NAs.txt qseqid_list_full.txt | grep '>' | awk '{print $2}' > qseqids_without_hits.txt
+
+# Then I manually searched the EdgeR_de_novo_SIG_dge_ordered.xls (using the qseqids_without_hits.txt list) to find the positions 
+# of where the trinity IDs (that had no blastn hits) went, and then added each one into the filtered blastn output file (output_file_filtered.tsv) 
+# in the correct positions, so that column 1 of both EdgeR_de_novo_SIG_dge_ordered.xls and output_file_filtered.tsv matched completely
+
 
 
 
