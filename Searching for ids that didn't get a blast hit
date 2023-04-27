@@ -1,0 +1,36 @@
+ 1038  cat output_file.txt | wc -l
+ 1039  cat output_file.txt | head -1
+ 1040  cat output_file.txt | cut -f 1 | uniq -c
+ 1041  cat output_file.txt | cut -f 1 | wc -l
+ 1042  cat output_file.txt | cut -f 1 | uniq | wc -l
+ 1043  cat output_file.txt | cut -f 1 
+ 1044  conda info --envs
+ 1045  conda activate rnaseq
+ 1046  csvtk
+ 1047  cat output_file.txt | csvtk cut -f 1
+ 1048  cat output_file.txt | csvtk cut -c 1
+ 1049  cat output_file.txt | csvtk cut -f 1
+ 1050  csvtk cut -h
+ 1051  cat output_file.txt | csvtk cut -f 1
+ 1052  cat output_file.txt | csvtk cut -f 2
+ 1053  cat output_file.txt 
+ 1054  cat output_file.txt | less -S
+ 1055  cat output_file.txt | column -t | less -S
+ 1056  csvtk cut -h
+ 1057  csvtk cut -f colA output_file.txt 
+ 1058  cat output_file.txt | awk '{print $1}'
+ 1059  cat output_file.txt | awk '{FS="\t; "print $0}'
+ 1060  cat output_file.txt | awk '{FS="\t"; print $0}'
+ 1061  cat output_file.txt | awk '{OFS="\t"; print $0}'
+ 1062  cat output_file.txt | awk '{OFS="\t"; print $0}' | csvtk cut -f 1
+ 1063  cat output_file.txt | awk '{OFS="\t"; print $1}' | uniq | wc -l
+ 1064  ls
+ 1065  cat output_file_filtered.tsv | csvtk cut -f 1
+ 1066  cat output_file_filtered.tsv | awk '{print $1}'
+ 1067  cat output_file_filtered.tsv | awk '{print $1}' > file1.txt
+ 1068  cat file1.txt 
+ 1069  cat output_file.txt | awk '{print $1}' > file2.txt
+ 1070  diff file1.txt file2.txt 
+ 1071  diff file1.txt file2.txt | grep '>'
+ 1072  diff file1.txt file2.txt | grep '>' | grep -v '>'
+ 1073  diff file1.txt file2.txt | grep '>' | wc -l
