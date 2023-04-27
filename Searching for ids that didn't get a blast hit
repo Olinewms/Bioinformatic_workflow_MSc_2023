@@ -1,12 +1,5 @@
- 1038  cat output_file.txt | wc -l
- 1039  cat output_file.txt | head -1
- 1040  cat output_file.txt | cut -f 1 | uniq -c
- 1041  cat output_file.txt | cut -f 1 | wc -l
- 1042  cat output_file.txt | cut -f 1 | uniq | wc -l
- 1043  cat output_file.txt | cut -f 1 
- 1044  conda info --envs
- 1045  conda activate rnaseq
- 1046  csvtk
+cat output_file.txt | cut -f 1 | uniq | wc -l
+
  1047  cat output_file.txt | csvtk cut -f 1
  1048  cat output_file.txt | csvtk cut -c 1
  1049  cat output_file.txt | csvtk cut -f 1
@@ -34,3 +27,8 @@
  1071  diff file1.txt file2.txt | grep '>'
  1072  diff file1.txt file2.txt | grep '>' | grep -v '>'
  1073  diff file1.txt file2.txt | grep '>' | wc -l
+ 
+ 
+# IDs_filtered_no_NAs.txt is the first column (qseqids) of the filtered blast output (filtered by taking only the hit with the highest bitsore per sample)
+# qseqid_list_big.txt is the first column of the ordered DEG data table (prior to blasting and filtering)
+diff IDs_filtered_no_NAs.txt qseqid_list_big.txt | grep '>' | awk '{print $2}' > file3.txt
