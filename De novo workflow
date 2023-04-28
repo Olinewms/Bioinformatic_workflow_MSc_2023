@@ -83,6 +83,8 @@ diff IDs_filtered_no_NAs.txt qseqid_list_full.txt | grep '>' | awk '{print $2}' 
 # of where the trinity IDs (that had no blastn hits) went, and then added each one into the filtered blastn output file (output_file_filtered.tsv) 
 # in the correct positions, so that column 1 of both EdgeR_de_novo_SIG_dge_ordered.xls and output_file_filtered.tsv matched completely
 
-
-
+# This command is used to remove line-breaks from fasta files once they have been through the 'Ordering.sh' script
+sed ':a; $!N; /^>/!s/\n\([^>]\)/\1/; ta; P; D' Trinity_EdgeR_sig_DEG_noBlastHits_ordered.fasta > Trinity_EdgeR_sig_DEG_noBlastHits_ordered_NoLineBreaks.fasta
+# This command could also be used:
+seqtk seq -l 0 input_file > output_file
 
