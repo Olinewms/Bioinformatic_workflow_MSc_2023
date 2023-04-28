@@ -1,4 +1,4 @@
-# First, a conda environment was established with all HISAT workflow tools and dependancies
+# First, a conda environment was established with all HISAT workflow tools and dependancies (called 'rna-seq')
 
 ========================================================================================================================
 # Extracting splice sites from the T. repens GTF (The python script used here are within the HISAT2 package)
