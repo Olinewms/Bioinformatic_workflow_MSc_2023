@@ -59,7 +59,7 @@ gffcompare -r ../../Reference_genomes/Trifolium_repens/Trifolium_repens/repens.f
 > library(genefilter)
 > library(RSkittleBrewer)                                                                                                                                                                                   
 > library(devtools)
-> library(dplyr
+> library(dplyr)
 
 > pheno_data <- read.csv('/Volumes/archive/userdata/student_users/olivernewman/2023/RNA_Seq_HISAT/Original_GTFs_and_sampleInfo/Sample_pheno_info.csv')                                                      
 > head(pheno_data)
