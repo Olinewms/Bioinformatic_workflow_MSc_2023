@@ -142,5 +142,31 @@ FALSE  TRUE
 > write.csv(fpkm_transcripts,'fpkm_transcripts_repens.csv',row.names=FALSE)                                                  
 
 > fpkm_genes <- gexpr(bg_F2_plants_filt)                                              
-> write.csv(fpkm_genes,'fpkm_genes_repens.csv',row.names=FALSE)
+> write.csv(fpkm_genes,'fpkm_genes_repens.csv',row.names=TRUE)
+
+
+
+# Exit the R environment
+# Use grep to extract the ref_id values (and stringTie ids if there is no ref_id available) from the stringTie merged GTF file
+grep -v '^#' stringtie_repens_merged.gtf | perl -F'\t' -lane 'BEGIN{%rs=();print "id\tref_id";}{$comment=$F[8];($gid)=($comment=~/gene_id \"([^\"]+)\"/);($rgid)=($comment=~/ref_gene_id \"([^\"]+)\"/);$rgid=(defined $rgid)?$rgid:$gid;$str="$gid\t$rgid";$rs{$str}=1;}END{for $s (keys(%rs)){print $s;}}'> out.txt
+
+
+# Use cat to cut the 3rd column (gene_ids) from the ballgown DEG table
+cat de_genes_filtered_repens_ballgown.csv | csvtk cut -f 3 > de_genes_filtered_repens_ballgown_Ids.txt
+
+# Use grep and the DEG ids (now in de_genes_filtered_repens_ballgown_Ids.txt) to pull a subset of transcripts out of the stringtie_repens_merged.gtf
+# This subset should only contain sequences that correspond to ids stated in the de_genes_filtered_repens_ballgown_Ids.txt file (make sure to double check this)
+grep -w -f de_genes_filtered_repens_ballgown_Ids.txt ../mapped_to_TrR_v5_trans/GTF_stuff_and_abundances/stringtie_repens_merged.gtf > sub_set.gtf
+
+# Use bedtools to get the fasta sequences (from the TrR.v5.fasta) that correspond to the transcripts stated in the sub_set.gtf
+# Double check that the sub_set.fa.out file only contains ids that correspond to the transcripts stated in the sub_set.gtf
+bedtools getfasta -fi ../index/TrR.v5.fasta -bed sub_set.gtf -name -fo sub_set.fa.out
+
+
+
+
+
+
+
+
 
