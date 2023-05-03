@@ -1,0 +1,23 @@
+# First index the repens reference genome(s) 
+bwa index TrR.v5.fasta
+bwa index GCA_005869975.1_AgR_To_v5_genomic.fa
+
+# Then align reads using bwa
+  # see the bwa_alignment_script.sh script in /variant_calling
+
+# Then filter out reads that do not map
+samtools view -b -F 0xc Sample_1_bwa_raw.bam -o Sample_1_bwa.filtered.bam 
+
+# Then filter out duplicate reads
+samtools sort -@ 16 -n Sample_1_bwa.filtered.bam -o Sample_1_bwa.filtered.sorted.n.bam  # .n means name; sorted by name
+samtools fixmate -m Sample_1_bwa.filtered.sorted.n.bam Sample_1_bwa.fixmate.bam
+samtools sort -o Sample_1_bwa.sorted.p.bam Sample_1_bwa.fixmate.bam # .p means position; sorted by position  
+samtools markdup -r -@ 16 Sample_1_bwa.sorted.p.bam Sample_1_bwa.dedup.bam
+
+# Then you need to index the .dedup.bam file
+samtools index Sample_1_bwa.dedup.bam
+
+# Now we can all the variants using FreeBayes 
+# Note here that I had to use the TrR.v5.fasta in /RNA_Seq_HISAT/index as the one in /variant_calling/TrR_v5_reference_genome didn't
+# have an .fai file (even though I'd indexed it using "bwa index TrR.v5.fasta"...)
+freebayes -f ../RNA_Seq_HISAT/index/TrR.v5.fasta -b BAMS/TrR_v5_reference_genome_alignment/Sample_1_bwa.dedup.bam --vcf ./VCF/Sample_1.vcf
