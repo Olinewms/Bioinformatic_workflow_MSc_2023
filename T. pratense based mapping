@@ -13,7 +13,7 @@ java -jar /usr/local/bin/trimmomatic.jar PE /Volumes/archive/userdata/student_us
 # Indexing T. reference genome
 STAR --runMode genomeGenerate --genomeDir STAR_ref_index_T_pratense/ --genomeFastaFiles data/GCF_020283565.1_RefSeq/GCF_020283565.1_ARS_RC_1.1_T_pratense_ref_genome.fa --sjdbGTFfile data/GCF_020283565.1_RefSeq/RefSeq_T_pratense.gtf --genomeSAindexNbases 13 --runThreadN 24
 
-# Mapping paired-trimmed fastq files to indexed reference genome
+# Aligning paired-trimmed fastq files to indexed reference genome
 # The following command was run once for each sample
 STAR --runMode alignReads --genomeDir /Volumes/userdata/student_users/olivernewman/2023/Reference_genome/ncbi_dataset_Trifolium_pratense_reference_genome/STAR_ref_index_T_pratense/ --outSAMtype BAM SortedByCoordinate --readFilesIn Paired_and_Unpaired_trimmed/Sample_10_R1_Paired_trimmed.fastq Paired_and_Unpaired_trimmed/Sample_10_R2_Paired_trimmed.fastq --runThreadN 72 --outFileNamePrefix /Volumes/userdata/student_users/olivernewman/2023/Illumina_downloads_2023/Mapped_to_T_pratense_genome/ --outFilterMultimapNmax 10
 
