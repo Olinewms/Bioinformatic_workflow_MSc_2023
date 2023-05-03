@@ -21,3 +21,17 @@ samtools index Sample_1_bwa.dedup.bam
 # Note here that I had to use the TrR.v5.fasta in /RNA_Seq_HISAT/index as the one in /variant_calling/TrR_v5_reference_genome didn't
 # have an .fai file (even though I'd indexed it using "bwa index TrR.v5.fasta"...)
 freebayes -f ../RNA_Seq_HISAT/index/TrR.v5.fasta -b BAMS/TrR_v5_reference_genome_alignment/Sample_1_bwa.dedup.bam --vcf ./VCF/Sample_1.vcf
+
+# Zip the .vcf file(s)
+bgzip Sample_1.vcf
+
+# Index the zipped .vcf
+bcftools index Sample_1.vcf.gz
+
+# Select all lines that do not start with hash (and therefore count the number of variants)
+zgrep -v -c '^#' Sample_1.vcf.gz
+
+# Now count the number of SNPs
+# Note: Sample one had 600957 (many of these are unlikely to be true SNPs
+bcftools view -v snps Sample_1.vcf.gz | grep -v -c '^#'
+
