@@ -103,6 +103,7 @@ see '?methods' for accessing help and source code
 > gene_names=unique(bg_filt_table[,9:10])
 > head(gene_names)
 > features=de_genes$id
+> mapped_gene_names=vector()
 
 > for (i in features) {query=gene_names%>%filter(gene_id==i & gene_name !='.'); n_hit=dim(query)[1];if (n_hit ==1){mapped_gene_names=append(mapped_gene_names,query$gene_name[[1]]) } else {mapped_gene_names=append(mapped_gene_names,'.')}}
 > de_genes$gene_name <- mapped_gene_names
