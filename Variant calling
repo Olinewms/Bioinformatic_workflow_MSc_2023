@@ -31,7 +31,7 @@ bcftools index Sample_1.vcf.gz
 # Select all lines that do not start with hash (and therefore count the number of variants)
 zgrep -v -c '^#' Sample_1.vcf.gz
 
-# Now count the number of SNPs
+# Now count the number of SNPs and indels
 # Note: Sample one had 600957 (many of these are unlikely to be true SNPs
 bcftools view -v snps Sample_1.vcf.gz | grep -v -c '^#'
-
+bcftools view -v indels Sample_1.vcf.gz | grep -v -c '^#'
