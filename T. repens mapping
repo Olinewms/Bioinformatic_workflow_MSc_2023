@@ -166,6 +166,9 @@ bedtools getfasta -fi ../index/TrR.v5.fasta -bed sub_set.gtf -name -fo sub_set.f
 
 
 
+# Mapping 2022 data (Gr15 and P12 paired trimmed fastqs) to TrR.v5.fasta
+(rna-seq) -bash-4.2$ hisat2 -p 20 --dta -x ../../index/TrR_v5_trans -1 ../../../../Paired_trimmed_for_Trinity/Gr_15_R1_Paired_trimmed.fq -2 ../../../../Paired_trimmed_for_Trinity/Gr_15_R2_Paired_trimmed.fq -S Gr15.sam  
+(rna-seq) -bash-4.2$ hisat2 -p 20 --dta -x ../../index/TrR_v5_trans -1 ../../../../Paired_trimmed_for_Trinity/P_12_R1_Paired_trimmed.fq -2 ../../../../Paired_trimmed_for_Trinity/P_12_R2_Paired_trimmed.fq -S P12.sam
 
 
 
