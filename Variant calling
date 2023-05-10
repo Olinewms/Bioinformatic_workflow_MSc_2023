@@ -35,3 +35,14 @@ zgrep -v -c '^#' Sample_1.vcf.gz
 # Note: Sample one had 600957 (many of these are unlikely to be true SNPs
 bcftools view -v snps Sample_1.vcf.gz | grep -v -c '^#'
 bcftools view -v indels Sample_1.vcf.gz | grep -v -c '^#'
+
+# Then I indexed and deduplicated all 10 paired trimmed fastq's using the Freebayes_BAM_prep.sh script
+
+# Then I used all 10 .dedupe.bam files in the following freebayes command
+# Note that "-p 6 --pooled-discrete" was used as the maximum number of plants per sample was three, and all plants are functionally diploid (3*2=6)
+freebayes -f ../../../RNA_Seq_HISAT/index/TrR.v5.fasta -p 6 --pooled-discrete -b ../TrR_v5_reference_genome_alignment/Second_attempt_all_samples/*.dedup.bam --vcf ../../VCF/All_samples_var.vcf
+
+# Then I zipped and indexed the vcf ouput file
+bgzip All_samples_var.vcf
+bcftools index All_samples_var.vcf.gz
+
