@@ -1,0 +1,5 @@
+# Made a blastn db of the TrR.v5.fasta reference genome file
+makeblastdb -in ../Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta -parse_seqids -dbtype nucl -out blastdb_TrR_v5
+
+# Make a fasta file of all the primers you want to use
+# Then blastn this against the TrR.v5.fasta reference genome using the blastdb_TrR_v5
