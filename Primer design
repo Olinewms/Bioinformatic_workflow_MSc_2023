@@ -3,3 +3,5 @@ makeblastdb -in ../Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fa
 
 # Make a fasta file of all the primers you want to use
 # Then blastn this against the TrR.v5.fasta reference genome using the blastdb_TrR_v5
+blastn -task blastn-short -db /Volumes/archive/userdata/student_users/olivernewman/2023/TrR_v5_blastdb/blastdb_TrR_v5 -query Chr8_23223144_SNP_primers.fasta -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 5 -num_threads 20 -evalue 1e-5 -out blastn_chr8_23223144_primers_result.txt
+
