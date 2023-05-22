@@ -19,3 +19,7 @@ SUBJ=$(echo "/Volumes/archive/userdata/student_users/olivernewman/2023/TrR_v5_bl
 blastn -db ${SUBJ} -query Chr8_23223144_SNP_primers.fasta -task blastn-short -outfmt 6 -out blastn_chr8_23223144_primers2_result.txt
 # Use this if you want an alignment format:
 blastn -db ${SUBJ} -query Chr8_23223144_SNP_primers.fasta -task blastn-short -out blastn_chr8_23223144_primers2_align_result.txt
+
+# Make a database of just the ROI
+makeblastdb -in ../Tr_RED_LEAF_entire_region_7kb.fasta -parse_seqids -dbtype nucl -out blastdb_TrRED_LEAF_region
+SUBJ2=$(echo "/Volumes/archive/userdata/student_users/olivernewman/2023/Primer_and_REDLEAF_ROI_fastas/Tr_RED_LEAF_exons_cds/blastdb_TrRED_LEAF_region") 
