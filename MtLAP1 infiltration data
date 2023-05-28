@@ -7,3 +7,7 @@ bash ./STAR_mapping_to_truncatula.sh
 
 # Used featureCounts to count reads per feature
 featureCounts -a Medicago_truncatula_genome/ncbi_dataset/data/GCF_003473485.1/genomic.gtf -o FeatureCounts_6_samples_truncatula_35SMtLAP1_counts.txt -T 64 ./mapped_to_truncatula_ref/All_sample_BAMs/*.bam -p -M --fraction
+
+# Then indexed each of the 6 BAM files individually indexed so that they could be inspected via IGV
+# Note that "samtools index *.bam" caused each bam to be overwritten when the next BAM was indexed
+samtools index Ctr1_Aligned.sortedByCoord.out.bam 
