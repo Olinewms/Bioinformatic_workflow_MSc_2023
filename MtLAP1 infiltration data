@@ -1,1 +1,9 @@
+# Made a M. truncatula STAR genome
+STAR --runMode genomeGenerate --genomeDir STAR_index/ --genomeFastaFiles GCF_003473485.1_MtrunA17r5.0-ANR_genomic.fna --sjdbGTFfile genomic.gtf --genomeSAindexNbases 13 --runThreadN 24
 
+# Made a script that mapped all 6 (3 controls and 3 MtLAP1 treatments) sample fastq files to the reference genome
+chmod +x STAR_mapping_to_truncatula.sh 
+bash ./STAR_mapping_to_truncatula.sh
+
+# Used featureCounts to count reads per feature
+featureCounts -a Medicago_truncatula_genome/ncbi_dataset/data/GCF_003473485.1/genomic.gtf -o FeatureCounts_6_samples_truncatula_35SMtLAP1_counts.txt -T 64 ./mapped_to_truncatula_ref/All_sample_BAMs/*.bam -p -M --fraction
