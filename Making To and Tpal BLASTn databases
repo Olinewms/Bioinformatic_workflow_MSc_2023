@@ -1,0 +1,2 @@
+makeblastdb -in ../Tp.fasta -parse_seqids -dbtype nucl -out blastdb_Tpal
+makeblastdb -in ../To.fasta -parse_seqids -dbtype nucl -out blastdb_To
