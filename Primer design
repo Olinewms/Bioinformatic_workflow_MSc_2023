@@ -3,7 +3,7 @@ makeblastdb -in ../Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fa
 
 # Make a fasta file of all the primers you want to use
 # Then blastn this against the TrR.v5.fasta reference genome using the blastdb_TrR_v5
-blastn -task blastn-short -db /Volumes/archive/userdata/student_users/olivernewman/2023/TrR_v5_blastdb/blastdb_TrR_v5 -query Chr8_23223144_SNP_primers.fasta -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 5 -num_threads 20 -evalue 1e-5 -out blastn_chr8_23223144_primers_result.txt
+blastn -task blastn-short -db /Volumes/archive/userdata/student_users/olivernewman/2023/TrR_v5_blastdb/blastdb_TrR_v5_2 -query Chr8_23223144_SNP_primers.fasta -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 5 -num_threads 20 -evalue 1e-5 -out blastn_chr8_23223144_primers_result.txt
 
 # The above blastn command gave a result that only showed hits for one of the 5 primers in the fasta file
 # Thus I decided to tweak things a little;
@@ -14,7 +14,7 @@ blastn -task blastn-short -db /Volumes/archive/userdata/student_users/olivernewm
   >2572_R
   CATCTTTTGCTGGAGCGTTACA
 
-SUBJ=$(echo "/Volumes/archive/userdata/student_users/olivernewman/2023/TrR_v5_blastdb/blastdb_TrR_v5")
+SUBJ=$(echo "/Volumes/archive/userdata/student_users/olivernewman/2023/TrR_v5_blastdb/blastdb_TrR_v5_2")
 # Use this if you want a table format:
 blastn -db ${SUBJ} -query Chr8_23223144_SNP_primers.fasta -task blastn-short -outfmt 6 -out blastn_chr8_23223144_primers2_result.txt
 # Use this if you want an alignment format:
