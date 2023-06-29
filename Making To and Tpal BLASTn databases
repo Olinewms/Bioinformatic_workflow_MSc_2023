@@ -2,5 +2,5 @@ makeblastdb -in ../Tp.fasta -parse_seqids -dbtype nucl -out blastdb_Tpal
 makeblastdb -in ../To.fasta -parse_seqids -dbtype nucl -out blastdb_To
 
 # These are the paths to respective databases:
-/Volumes/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_pallescens/Tpal_db/
-/Volumes/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_occidentale/To_db/
+/Volumes/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_pallescens/Tpal_db/blastdb_Tpal
+/Volumes/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_occidentale/To_db/blastdb_To
