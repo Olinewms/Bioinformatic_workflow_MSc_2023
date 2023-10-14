@@ -1,0 +1,26 @@
+# --------- IMPORTANT ---------
+# Before doing this, you need to QC your fastq files, and possibly filter out low-quality reads
+
+# First I created a new working directory called Genome_assembly_tutourial, and then cd'd into it and downloaded a practice fastq file
+wget https://sra-pub-src-1.s3.amazonaws.com/ERR3336325/all_minion.fastq.1
+
+# Then I created a conda environment (py39) with an updated version of python
+conda create -n py39 python=3.9 anaconda
+
+# Then I activated that env and installed Flye and Porechop
+conda install flye
+conda install porechop
+
+# Renamed the fastq
+mv all_minion.fastq.1 nanopore_data.fastq
+
+# Trim adapters using porechop
+porechop -i nanopore_data.fastq -o nanopore_data.trimmed.fa --format fasta -t 20
+
+# Assemble the genome 
+# -g indicates the estimated genome size
+# -i tells flye to include polishing. By defult, flye uses 1 iteration of polishing, but here we are telling it to use 2 iterations. >>>>>> Use 5 for your actual assembly <<<<<<
+  # When assembling, the reads are first assembled into kmers. Then these kmers are 'stitched' together. After this (during the polishing), the reads will be mapped back to the 'draft' assembly to make sure everything fits properly.
+  # If you have say a 1 kb fragment from a virus, this sequence isn't going to align (there isn't going to be any sufficent matching overhangs with plant reads) to any of the kmers, and therefore is unlikely to be incorperated into the final assembly.
+
+flye --nano-raw nanopore_data.trimmed.fa -o assembly -g 5.6m -t 20 -i 2
