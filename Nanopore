@@ -1,0 +1,12 @@
+# First I did a preliminary check on the unpigmented library sequence data to see if the ROI had been sequenced
+# For this I just used the Fast MinKNOW basecalled fastq files
+
+# Concatenating all the gzipped fastq files
+cat PAS21359_pass_60ba7eef_1f8855cc*.fastq.gz > all_FastCalled_passed.fastq.gz
+mv all_FastCalled_passed.fastq.gz ../../../../preliminary_check/
+
+# Using FiltLong to filter reads
+conda activate py39
+conda install -c bioconda filtlong
+filtlong --min_length 1000 --keep_percent 90 --target_bases 500000000 all_FastCalled_passed.fastq.gz | gzip > filtered_all_FastCalled_passed.fastq.gz
+
