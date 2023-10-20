@@ -5,9 +5,18 @@
 cat PAS21359_pass_60ba7eef_1f8855cc*.fastq.gz > all_FastCalled_passed.fastq.gz
 mv all_FastCalled_passed.fastq.gz ../../../../preliminary_check/
 
-# Using FiltLong to filter reads to remove the worst 10% of read bases, and and reads smaller than 10 kb
+# Using FiltLong to filter reads to remove the worst 10% of read bases, and any reads smaller than 10 kb
+# Note that 10 kb is way too high (just use 1 kb when doing your actual assembly)
+# I should also include a --headcrop 50 parameter that removes 50 basepairs from the beginning of each read (this is available in NanoFilt, so use this next time)
+# The basecaller used by MinKNOW should have taken care of adapter sequences
+
 conda activate py39
 conda install -c bioconda filtlong
 filtlong --min_length 10000 --keep_percent 90 all_FastCalled_passed.fastq.gz | gzip > filtered_10kb_90percent_all_FastCalled_passed.fastq.gz
 
-# Use Porechop to remove adapters
+
+# Use this to convert trimmed filtered fastq to a fasta, so it can be used by e.g., Vulcan
+seqtk seq -a input.fastq > output.fasta
+
+
+# Vulcan
