@@ -19,4 +19,5 @@ filtlong --min_length 10000 --keep_percent 90 all_FastCalled_passed.fastq.gz | g
 seqtk seq -a input.fastq > output.fasta
 
 
-# Vulcan
+# Mapping all >10 kb reads to chromosome 8 TrRv5 using Vulcan
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5_chr8.fasta -i filtered_10kb_90percent_all_FastCalled_passed.fastq.gz -w ./test_vulcan/ -o vulcan_green_against_chrd8 -t 64 -ont
