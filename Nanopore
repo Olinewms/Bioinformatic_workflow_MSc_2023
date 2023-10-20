@@ -28,12 +28,12 @@ vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_ge
 # The bam file was 49 GB, so took ~20 minutes to index
 samtools index vulcan_green_against_chr8_90.bam
 
-# After viewing this in IGV it was found that from the region from 200 bp upstream of exon 1 to 1677 bp past exon 3 was missing. This could be because of the following reasons:
+# After viewing this in IGV it was found that from the region from ~160 bp upstream of exon1 to 1677 bp past exon3 was missing. This could be because of the following reasons:
 # 1. The region is infact missing (large deletion or recombination event) and therefore the 3'UTR and CDS sequences obtained from PCR were due to purple gDNA contamination
 # 2. Nanopore could not handle the repeditive AT sequences and the overall AT-richness of this region, and thus it was not sequenced
 # 3. The region was sequenced, but because I used --min_length 10000 in my filtlong command, the sequnces were removed
 # 4. The region was sequenced, but because I used --keep_percent 90 in my filtlong command, the sequnces were removed because AT-rich regions will inherently be of low-quality 
-# 5. Maybe only the first 200 bp of the promoter is missing, and maybe the reason why the CDS and 3'UTR wasn't able to be sequenced was due to the long AT-repeat 1677 bp downstream of exon 3
+# 5. Maybe only the first 200 bp of the promoter is missing, and maybe the reason why the CDS and 3'UTR wasn't able to be sequenced was due to the long AT-repeat 1677 bp downstream of exon3
 
 
 
