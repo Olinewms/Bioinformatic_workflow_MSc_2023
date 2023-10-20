@@ -15,9 +15,25 @@ conda install -c bioconda filtlong
 filtlong --min_length 10000 --keep_percent 90 all_FastCalled_passed.fastq.gz | gzip > filtered_10kb_90percent_all_FastCalled_passed.fastq.gz
 
 
-# Use this to convert trimmed filtered fastq to a fasta, so it can be used by e.g., Vulcan
+# Use this to convert trimmed filtered fastq to a fasta
+# Note that this is unneccessary in most instances, as Vulcan and Minimap2 can take fastq's as inputs
 seqtk seq -a input.fastq > output.fasta
 
 
 # Mapping all >10 kb reads to chromosome 8 TrRv5 using Vulcan
-vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5_chr8.fasta -i filtered_10kb_90percent_all_FastCalled_passed.fastq.gz -w ./test_vulcan/ -o vulcan_green_against_chrd8 -t 64 -ont
+# Note that this command took just under 3 hours to complete
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5_chr8.fasta -i filtered_10kb_90percent_all_FastCalled_passed.fastq.gz -w ./test_vulcan/ -o vulcan_green_against_chr8 -t 64 -ont
+
+# Index the bam file
+# The bam file was 49 GB, so took ~20 minutes to index
+samtools index vulcan_green_against_chr8_90.bam
+
+# After viewing this in IGV it was found that from the region from 200 bp upstream of exon 1 to 1677 bp past exon 3 was missing. This could be because of the following reasons:
+# 1. The region is infact missing (large deletion or recombination event) and therefore the 3'UTR and CDS sequences obtained from PCR were due to purple gDNA contamination
+# 2. Nanopore could not handle the repeditive AT sequences and the overall AT-richness of this region, and thus it was not sequenced
+# 3. The region was sequenced, but because I used --min_length 10000 in my filtlong command, the sequnces were removed
+# 4. The region was sequenced, but because I used --keep_percent 90 in my filtlong command, the sequnces were removed because AT-rich regions will inherently be of low-quality 
+# 5. Maybe only the first 200 bp of the promoter is missing, and maybe the reason why the CDS and 3'UTR wasn't able to be sequenced was due to the long AT-repeat 1677 bp downstream of exon 3
+
+
+
