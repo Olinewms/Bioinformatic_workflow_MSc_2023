@@ -49,4 +49,8 @@ gunzip -c all_FastCalled_passed.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 
 vulcan -r filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -i Region_containing_TrREDLEAF_missing_from_longReadData.fasta -w ./test2_vulcan/ -o vulcan_missingROIchr8_against_green_longReads -t 64 -ont
 # after entering this command, I recieved the following warning:
   # [WARNING] For a multi-part index, no @SQ lines will be outputted. Please use --split-prefix.
+# This didn't work, so I decided to convert the fastq.gz to a fasta, so I could then blat search the long reads
+seqtk seq -a filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz > filtered_min1kb_min10qScore_all_FastCalled_passed.fasta
+
+blat ../Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta TrWDR_protein_mRNA.fasta Blat_output_TrWDR_mRNA_TrR_v5.txt
 
