@@ -35,5 +35,17 @@ samtools index vulcan_green_against_chr8_90.bam
 # 4. The region was sequenced, but because I used --keep_percent 90 in my filtlong command, the sequnces were removed because AT-rich regions will inherently be of low-quality 
 # 5. Maybe only the first 200 bp of the promoter is missing, and maybe the reason why the CDS and 3'UTR wasn't able to be sequenced was due to the long AT-repeat 1677 bp downstream of exon3
 
+# I will attempt to clarify which of these is the case by carrying out the following in the order stated:
+# 1. Redo the read filtering, using Nanofilt this time so that --headcrop can be utilized. Minimum read length will be set to 1 kb, and a minimum quality score of 10
+# 2. From these new filtered reads, make a new bam file alignment to TrRv5 chromosome 8
+  # If this still shows no sequence, then either the region was unable to be sequenced due to AT-content, or a 
+  # recombination event has occurred and it is now somewhere else in the genome with different flanking regions relative to the flanking regions 
+  # If it looks as if a recombination event has occured, then I need to make an entire genome assembly, and see where it has moved to, and 
+  # therefore what the new flanking regions look like
+
+
+gunzip -c all_FastCalled_passed.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz
+
+vulcan -r filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -i Region_containing_TrREDLEAF_missing_from_longReadData.fasta -w ./test2_vulcan/ -o vulcan_missingROIchr8_against_green_longReads -t 64 -ont
 
 
