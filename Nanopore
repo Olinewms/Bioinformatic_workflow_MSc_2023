@@ -47,5 +47,6 @@ samtools index vulcan_green_against_chr8_90.bam
 gunzip -c all_FastCalled_passed.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz
 
 vulcan -r filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -i Region_containing_TrREDLEAF_missing_from_longReadData.fasta -w ./test2_vulcan/ -o vulcan_missingROIchr8_against_green_longReads -t 64 -ont
-
+# after entering this command, I recieved the following warning:
+  # [WARNING] For a multi-part index, no @SQ lines will be outputted. Please use --split-prefix.
 
