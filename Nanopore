@@ -53,4 +53,15 @@ vulcan -r filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -i Region_c
 seqtk seq -a filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz > filtered_min1kb_min10qScore_all_FastCalled_passed.fasta
 
 blat ../Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta TrWDR_protein_mRNA.fasta Blat_output_TrWDR_mRNA_TrR_v5.txt
+# This blat search didn't work because the subject (reference) was too large
+
+
+cd /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/preliminary_check
+makeblastdb -in filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -parse_seqids -dbtype nucl -out blastdb_filtered_FastCalled
+
+blastn -query Region_containing_TrREDLEAF_missing_from_longReadData.fasta -db /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/preliminary_check/db_filtered_fastcalled/blastdb_filtered_FastCalled -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 1 -num_threads 64 -evalue 1e-5 -out blastn_missingROI.txt
+
+
+
+
 
