@@ -62,6 +62,9 @@ makeblastdb -in filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -parse_s
 blastn -query Region_containing_TrREDLEAF_missing_from_longReadData.fasta -db /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/preliminary_check/db_filtered_fastcalled/blastdb_filtered_FastCalled -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 1 -num_threads 64 -evalue 1e-5 -out blastn_missingROI.txt
 
 
+Matches_of_missingROI.txt
+
+
 
 
 
