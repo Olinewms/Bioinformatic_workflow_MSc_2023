@@ -14,11 +14,9 @@ conda activate py39
 conda install -c bioconda filtlong
 filtlong --min_length 10000 --keep_percent 90 all_FastCalled_passed.fastq.gz | gzip > filtered_10kb_90percent_all_FastCalled_passed.fastq.gz
 
-
 # Use this to convert trimmed filtered fastq to a fasta
 # Note that this is unneccessary in most instances, as Vulcan and Minimap2 can take fastq's as inputs
 seqtk seq -a input.fastq > output.fasta
-
 
 # Mapping all >10 kb reads to chromosome 8 TrRv5 using Vulcan
 # Note that this command took just under 3 hours to complete
@@ -42,8 +40,10 @@ samtools index vulcan_green_against_chr8_90.bam
   # recombination event has occurred and it is now somewhere else in the genome with different flanking regions relative to the flanking regions 
   # If it looks as if a recombination event has occured, then I need to make an entire genome assembly, and see where it has moved to, and 
   # therefore what the new flanking regions look like
+# Note that it looks as if the TrRv5 reference genome is far too dissimilar from the green F2 genotype that doing any long-read alignmetn to it will not be very informative
 
-
+******************************************************************************************************************************************************************************************************************
+# Re-filtering the raw Fastcalled read data
 gunzip -c all_FastCalled_passed.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz
 
 vulcan -r filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -i Region_containing_TrREDLEAF_missing_from_longReadData.fasta -w ./test2_vulcan/ -o vulcan_missingROIchr8_against_green_longReads -t 64 -ont
@@ -53,18 +53,32 @@ vulcan -r filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -i Region_c
 seqtk seq -a filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz > filtered_min1kb_min10qScore_all_FastCalled_passed.fasta
 
 blat ../Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta TrWDR_protein_mRNA.fasta Blat_output_TrWDR_mRNA_TrR_v5.txt
-# This blat search didn't work because the subject (reference) was too large
-
+# This blat search didn't work because the subject (reference) was too large, so I decided to use blastn instead:
 
 cd /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/preliminary_check
 makeblastdb -in filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -parse_seqids -dbtype nucl -out blastdb_filtered_FastCalled
 
 blastn -query Region_containing_TrREDLEAF_missing_from_longReadData.fasta -db /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/preliminary_check/db_filtered_fastcalled/blastdb_filtered_FastCalled -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -max_target_seqs 1 -num_threads 64 -evalue 1e-5 -out blastn_missingROI.txt
+seqkit grep -f Matches_of_missingROI.txt filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -o Potential_TrREDLEAF_seqs.fasta
 
+# When investigating the top 5 blastn hits in "Potential_TrREDLEAF_seqs.fasta" against the TrREDLEAF region (cut from TrRv5),
+# there was no significant match in any of the top 6. This is pretty compelling evidence that the region is not present in the long read sequencing data
+# All 6 reads looked like they contained a homolog of TrREDLEAF, but not the exact gene of interest
+# This means that either the there has been a large deletion (and my positive PCR results from green gDNA were due to contamination),
+# or its too difficult to sequnce because on the incredibly AT-rich flanking regions
 
-Matches_of_missingROI.txt
+******************************************************************************************************************************************************************************************************************
 
+# Then what I decided to do was to check if some of the reads mapping to the region upstream of TrREDLEAF did infact span the ROI
+seqkit grep -f example_LongReads_upstream_of_TrRED.txt filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -o Regions_possibly_spanning_missingROI.fasta
 
+# When five full reads were aligned to the TrREDLEAF ROI (7182 bp), all showed only very small fragements of similarity
+# This suggests that either (1) the region is infact entirely missing and therefore my unpigmented positive PCR results are due to contamination
+# or (2) the region could not be Nanopore sequenced. I need to make an assembly in order to clarify this, and also redo the Vulcan alignment with the filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz
 
+# First, I repeated the Vulcan aligment, this time using the second (more inclusive) set of filtered Fastcalled reads (min. 1 kb and headcropped 50 nts)
+# This took ~2 hrs to finish
+# If this shows a very similar looking read alignment to the previous Vulcan alignment, then its very likely the the region could not be sequenced, or it is fully deleted
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5_chr8.fasta -i filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -w ./test2_vulcan/ -o vulcan2_green_against_chr8 -t 64 -ont
 
 
