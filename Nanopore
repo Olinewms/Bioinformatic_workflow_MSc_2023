@@ -80,5 +80,9 @@ seqkit grep -f example_LongReads_upstream_of_TrRED.txt filtered_min1kb_min10qSco
 # This took ~2 hrs to finish
 # If this shows a very similar looking read alignment to the previous Vulcan alignment, then its very likely the the region could not be sequenced, or it is fully deleted
 vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5_chr8.fasta -i filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -w ./test2_vulcan/ -o vulcan2_green_against_chr8 -t 64 -ont
+# This mapping look essentially identical to the last lot. Therefore it is almost certain that the ROI is not present in the unpigmented genotype
 
+# Then I decided to make a draft assembly
+# This assembly took ____ hrs to construct (Started at 10:22am)
+flye --nano-raw ../preliminary_check/filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -o assembly1 -g 1g -t 64 -i 4 --keep-haplotypes
 
