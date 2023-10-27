@@ -85,14 +85,21 @@ vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_ge
 # Then I decided to make a draft assembly
 # This assembly took ~3 days to construct
 # There were over 250,000 contigs. This is absurdly high, and may be due to --nano-raw being used rather than --nano-cor
+# There are probably so many contigs due to the heterozygosity being so high; because (1) the clover genome is inherintly extremely heterozygous,
+# and (2) because the assembly was made with low-quality Fast-called basecalled reads. The fact that its an allotetraploid also likely increases the number of individual contigs too
 flye --nano-raw ../preliminary_check/filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -o assembly1 -g 1g -t 64 -i 4 --keep-haplotypes
+
+
+
 
 # After finishing the assembly, I mapped the ~40 kb genic region downstream of TrRED LEAF (in TrRv5) to the assembly
 vulcan -r ../../Flye_first_assembly/assembly1/assembly.fasta -i ../Large_region_downnstream_of_TrRED_TrRv5.fasta -w ./mapping_downstream_region_to_assembly/ -o mapping_downstream_region_to_assembly -t 64 -ont
 
 # Due to the fact that I do not know of the TrREDLEAF coordinates in TrRv5 ref. genome are correct (due to the ambiguity on either side), I cannot really use this reference genome to do variant calling
-# I need to wait until I've sequenced the purple F2, and then map these reads to the green assembly (or vice-versa)
+# We can't even be certain that TrRED LEAF actually resides in chr8
+# Thus I need to wait until I've sequenced the purple F2, and then map these reads to the green assembly (or vice-versa) to check for SV's
 
-
-
+# I then cut a large fragment from UTM_Trep_v1_chr8_Occ (containing the supposed neighbours of TrREDLEAF) and mapped all my passed_filtered FastCalled reads to it
+# Upon inspection, it can be concluded that the TrRv5 reference genome is so so far off being in any way similar to the F2 green genotype, and that the longreads map far better to UTM_Trep_v1.0
+vulcan -r UTM_Trep_v1_chr8_Occ_18974088_to_19429130.fasta -i filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -w ./mapping_all_passedFilteredReads_to_chr8_section_UTM_Trep/ -o mapping_all_passedFilteredReads_to_chr8_section_UTM_Trep -t 64 -ont
 
