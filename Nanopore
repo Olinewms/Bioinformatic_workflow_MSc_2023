@@ -76,15 +76,15 @@ seqkit grep -f example_LongReads_upstream_of_TrRED.txt filtered_min1kb_min10qSco
 # This suggests that either (1) the region is infact entirely missing and therefore my unpigmented positive PCR results are due to contamination
 # or (2) the region could not be Nanopore sequenced. I need to make an assembly in order to clarify this, and also redo the Vulcan alignment with the filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz
 
-# First, I repeated the Vulcan aligment, this time using the second (more inclusive) set of filtered Fastcalled reads (min. 1 kb and headcropped 50 nts)
+# First, I repeated the Vulcan aligment, this time using the second (more inclusive/ less strict) set of filtered Fastcalled reads (min. 1 kb and headcropped 50 nts)
 # This took ~2 hrs to finish
 # If this shows a very similar looking read alignment to the previous Vulcan alignment, then its very likely the the region could not be sequenced, or it is fully deleted
 vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5_chr8.fasta -i filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -w ./test2_vulcan/ -o vulcan2_green_against_chr8 -t 64 -ont
-# This mapping look essentially identical to the last lot. Therefore it is almost certain that the ROI is not present in the unpigmented genotype
+# This mapping look essentially identical to the last lot. Therefore it is almost certain that the ROI is not present in the unpigmented genotype, and that the entire ROI (as seen in TrRv5) is abscent or incorrectly assembled
 
 # Then I decided to make a draft assembly
 # This assembly took ~3 days to construct
-# There were over 250,000 contigs. This is absurdly high, and may be due to --nano-raw being used rather than --nano-cor
+# There were 34,061 contigs. This is moderately high (but not absurd), and may be due to --nano-raw being used rather than --nano-cor
 # There are probably so many contigs due to the heterozygosity being so high; because (1) the clover genome is inherintly extremely heterozygous,
 # and (2) because the assembly was made with low-quality Fast-called basecalled reads. The fact that its an allotetraploid also likely increases the number of individual contigs too
 flye --nano-raw ../preliminary_check/filtered_min1kb_min10qScore_all_FastCalled_passed.fastq.gz -o assembly1 -g 1g -t 64 -i 4 --keep-haplotypes
@@ -102,4 +102,14 @@ vulcan -r ../../Flye_first_assembly/assembly1/assembly.fasta -i ../Large_region_
 # I then cut a large fragment from UTM_Trep_v1_chr8_Occ (containing the supposed neighbours of TrREDLEAF) and mapped all my passed_filtered FastCalled reads to it
 # Upon inspection, it can be concluded that the TrRv5 reference genome is so so far off being in any way similar to the F2 green genotype, and that the longreads map far better to UTM_Trep_v1.0
 vulcan -r UTM_Trep_v1_chr8_Occ_18974088_to_19429130.fasta -i filtered_min1kb_min10qScore_all_FastCalled_passed.fasta -w ./mapping_all_passedFilteredReads_to_chr8_section_UTM_Trep/ -o mapping_all_passedFilteredReads_to_chr8_section_UTM_Trep -t 64 -ont
+
+# Note: to Guppy SUP basecall the the green data, you need to move the Fast5 files to where ever the v100 NVIDIA GPU is, then from that address, call Guppy
+# After completion, move the new Fastq files back to /brownfield archive, then delete from the v100 NVIDIA GPU address. 
+
+# Once I the pigmented gDNA MinION run finishes, I need to do trim and filter the reads, then make an assembly with this
+# Then I need to map all the green reads to this to generate a large bam file. Use this bam file with Sniffles to call structural variants
+# Sniffles2 should be used because it is designed for structural variation detection, which is what we are interested in now
+
+
+
 
