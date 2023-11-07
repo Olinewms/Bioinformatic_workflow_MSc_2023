@@ -1,0 +1,14 @@
+# First I need to guppy basecall the following fast5 directories;
+# oli_green_171023/oli_green_171023_test_1/20231017_1322_P2S-00650-B_PAS21359_60ba7eef/fast5_pass
+# oli_purple_011123_test2_2/oli_purple_011123_test2_2_run2/20231101_1044_X2_FAX03109_746b7021/fast5_pass
+# oli_purple_301023/oli_purple_301023_test2/20231030_1245_X2_FAX03109_49331880/fast5_pass
+
+## Green
+# use --config _______________________________
+
+
+## Purple
+# use --config dna_r9.4.1_450bps_sup_plant.cfg
+
+
+# Then I need to 
