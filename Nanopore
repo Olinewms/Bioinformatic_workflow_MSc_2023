@@ -10,5 +10,17 @@
 ## Purple
 # use --config dna_r9.4.1_450bps_sup_plant.cfg
 
+# the I need to concatenate the two purple fastq datasets 
 
-# Then I need to 
+
+
+# Then I need to filter the new fastqs
+gunzip -c SUP_passed_green.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz
+gunzip -c SUP_passed_purple.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz
+
+
+# Then I need to align these new fastqs to the fastq files to HiFi ref. genome using Vulcan
+# This will give 2 bam files (one for green and one for purple)
+# Then I need to do structural variant calling on these 2 bam files
+# Then view them in IGV with the HiFi ref genome
+
