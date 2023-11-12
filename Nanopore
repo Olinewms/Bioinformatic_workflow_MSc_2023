@@ -9,6 +9,34 @@
 ## Purple
 # use --config dna_r9.4.1_450bps_sup_plant.cfg
 
+# Code in basecalling bash script (below it is setup for the green fast5 data):
+____________________________________________________________________________________________________________________
+#!/usr/bin/env bash
+
+# stop script if there is an error
+set -ueo pipefail
+
+# clear screen
+clear
+
+# Specify absolute path to folder containing fast5_files
+InFolder=$(echo "/Volumes/archive/brownfieldlab/Nanopore/white_clover/green/oli_green_171023/oli_green_171023_test_1/20231017_1322_P2S-00650-B_PAS21359_60ba7eef/fast5_pass")
+
+# specify output folder where you want the new fastq files to be stored
+out=$(echo "/Volumes/archive/brownfieldlab/Nanopore/white_clover/green/oli_green_171023_SUP_fast5_pass")
+
+# Set path to configuration file to use
+# it is generally in the bin/ont-guppy/data folder
+supconf=$(echo "/Volumes/archive/brownfieldlab/Nanopore/Guppy/ont-guppy/data/dna_r10.4.1_e8.2_400bps_sup.cfg")
+
+# run guppy using super accuracy basecalling model
+# Rebasecalling with guppy 6.5.7+ca6d6af
+/Volumes/archive/brownfieldlab/Nanopore/Guppy/ont-guppy/bin/guppy_basecaller -i ${InFolder} -s ${out} -c ${supconf} -x 'cuda:0' --num_callers 8 --trim_adapters --compress_fastq-bash-4.2$
+____________________________________________________________________________________________________________________
+
+# Calling the basecalling script
+bash ./Scripts/Ayos_code_for_guppyBasecalling.sh
+
 
 # Then I need to concatenate the two purple fastq datasets 
 # Just move them all into the same directory, and then concatentate all the fastqs using;
@@ -18,17 +46,23 @@ rsync oli_purple_301023_SUP_fast5_pass/pass/*.fastq.gz all_purple_SUP_fastqs/
 cat ./all_purple_SUP_fastqs/fastq_runid_*.fastq.gz > all_purple_SUP_called_passed_merged.fastq.gz
 
 # I also needed to concatenate the green SUP fastqs 
+cat ../oli_green_171023_SUP_fast5_pass/pass/fastq_runid_1f8855ccb02e4c3c344446bb5b06cf95f91d308c_*.fastq.gz > all_green_SUP_called_passed_merged.fastq.gz
 
 
-
-# Then I need to filter the new fastqs
-gunzip -c SUP_passed_green.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz
-gunzip -c SUP_passed_purple.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz
+# Then I need to filter the new SUP_passed_fastqs
+gunzip -c all_purple_SUP_called_passed_merged.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz
+gunzip -c all_green_SUP_called_passed_merged.fastq.gz | NanoFilt -q 10 -l 1000 --headcrop 50 | gzip > filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz
 
 
 # Then I need to align these new fastqs to the fastq files to HiFi hap1 genome assembly using Vulcan
 # This will give 2 bam files (one for green and one for purple)
+
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz -w ./SUP_vulcan_purple/ -o vulcan_purple_SUP_against_UTM_Trepv1hap1 -t 64 -ont
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz -w ./SUP_vulcan_green/ -o vulcan_green_SUP_against_UTM_Trepv1hap1 -t 64 -ont
+
+# At this point you can load the .bam files into IGV with the hap1 ref. seq and inspect the chr8 TrTo ROI
+
 # Then I need to do structural variant calling on these 2 bam files (will give two vcf files (each with only one sample column), and then I can load both of these into IGV)
-# Then view them in IGV with the HiFi ref genome
+# Then view them in IGV with the HiFi ref hap1 genome
   # I should also make an annotation file of HiFi hap1 ref. using RNA-Seq data and StringTie
 
