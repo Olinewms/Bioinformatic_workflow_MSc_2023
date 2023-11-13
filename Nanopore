@@ -58,11 +58,24 @@ gunzip -c all_green_SUP_called_passed_merged.fastq.gz | NanoFilt -q 10 -l 1000 -
 # This will give 2 bam files (one for green and one for purple)
 
 vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz -w ./SUP_vulcan_purple/ -o vulcan_purple_SUP_against_UTM_Trepv1hap1 -t 64 -ont
+samtools index vulcan_purple_SUP_against_UTM_Trepv1hap1_90.bam
 vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz -w ./SUP_vulcan_green/ -o vulcan_green_SUP_against_UTM_Trepv1hap1 -t 64 -ont
+samtools index vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam
 
-# At this point you can load the .bam files into IGV with the hap1 ref. seq and inspect the chr8 TrTo ROI
+# This is for the green vulcan run:
+[M::mm_idx_stat::35.712*2.33] distinct minimizers: 41771855 (46.78% are singletons); average occurrences: 4.497; average spacing: 5.314; total length: 998247995
+
+
+# At this point you can load the .bam files (separetly?) into IGV with the hap1 ref. seq and inspect the chr8 TrTo ROI (~CM061893.1:45,047,877-45,054,980)
+# Loading both bam files will probably crash your computer; therefore if you assemble each into contigs first beforehand, this should be less computationally intensive for IGV
 
 # Then I need to do structural variant calling on these 2 bam files (will give two vcf files (each with only one sample column), and then I can load both of these into IGV)
 # Then view them in IGV with the HiFi ref hap1 genome
   # I should also make an annotation file of HiFi hap1 ref. using RNA-Seq data and StringTie
+
+
+
+
+
+
 
