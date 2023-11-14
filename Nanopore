@@ -64,7 +64,7 @@ samtools index vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam
 
 # This is for the green vulcan run:
 [M::mm_idx_stat::35.712*2.33] distinct minimizers: 41771855 (46.78% are singletons); average occurrences: 4.497; average spacing: 5.314; total length: 998247995
-
+Done (346417 reads mapped (90.25%), 37424 reads not mapped, 1515154 lines written)(elapsed: 160m, 36 r/s)
 
 # At this point you can load the .bam files (separetly?) into IGV with the hap1 ref. seq and inspect the chr8 TrTo ROI (~CM061893.1:45,047,877-45,054,980)
 # Loading both bam files will probably crash your computer; therefore if you assemble each into contigs first beforehand, this should be less computationally intensive for IGV
