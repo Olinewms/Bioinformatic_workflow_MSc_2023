@@ -75,6 +75,12 @@ Done (346417 reads mapped (90.25%), 37424 reads not mapped, 1515154 lines writte
 
 
 
+# First I indexed the UTM_Trep_v1.0_hap1 reference genome
+hisat2-build -p 16 ./GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna UTM_Trep_v1_hap1_trans
+
+# Then I had to map each fwd and rv read to the UTM_Trep_v1_hap1 assembly 
+hisat2 -p 8 --dta -x ./indexed_UTM_Trep_v1_hap1/UTM_Trep_v1_hap1_trans -1 ./Paired_and_Unpaired_trimmed/Paired_R1s/Sample_1_R1_Paired_trimmed.fastq -2 ./Paired_and_Unpaired_trimmed/Paired_R2s/Sample_1_R2_Paired_trimmed.fastq -S ./mapped/Sample_1.sam
+
 
 
 
