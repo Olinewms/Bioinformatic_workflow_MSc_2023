@@ -91,12 +91,30 @@ stringtie ./bams/Sample_1.bam -l Sample_1 -p 20 -o ./assemblies/sample_1.gtf
 stringtie --merge -p 20 -o stringtie_UTM_Trep_v1_hapd1_merged.gtf mergelist.txt
 
 # The .bam files were indexed so they could be viewed in IGV:
-#!/usr/bin/bash
-#bash script for samtools; index our .bam files to obtain .bam.bai files using samtools
+# Bash script:
 SAMPLES="Sample_1 Sample_2 Sample_3 Sample_4 Sample_5 Sample_6 Sample_7 Sample_8 Sample_9 Sample_10"
 for SAMPLE in $SAMPLES; do
     samtools index ${SAMPLE}.bam ${SAMPLE}.bam.bai
 done
+
+
+# Then I decided to map contig_29575 from the green preliminary assembly (using fast-called reads) to the UTM_Trep_v1.0_hap1 reference genome
+seqkit grep -f ../mapping_contig_29575_to_UTM_Trep_v1_hap1/contig_to_extract.txt ./Flye_first_assembly/assembly1/assembly.fasta -o ../mapping_contig_29575_to_UTM_Trep_v1_hap1/contig_29575_from_fastcalled_green_assembly.fasta
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i contig_29575_from_fastcalled_green_assembly.fasta -w ./Fast_vulcan_contig_29575_green_to_UTM_hap1/ -o contig_29575_green_to_UTM_hap1 -t 64 -ont
+samtools index contig_29575_green_to_UTM_hap1_90.bam
+
+# This alignment led me to the homologous region to the TrRED LEAF (Rl) region on TrTp subgenome (CM061894.1:19817092)
+# Thus I needed to find the correct contig that aligns better to the TrTo chr8 ROI
+# To do this I needed to cut out a region from the TrTo chr8 ROI and map this to the assembly fasta
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i contig_29575_from_fastcalled_green_assembly.fasta -w ./Fast_vulcan_contig_29575_green_to_UTM_hap1/ -o contig_29575_green_to_UTM_hap1 -t 64 -ont
+
+# The main hit from this alignment was contig_15937 
+# Thus I need to extract this contig from the prelim green assembly and then map it to UTM_Trep_v1.0_hap1
+seqkit grep -f ./contig_15937_to_extract_from_assembly.txt ../green/Flye_first_assembly/assembly1/assembly.fasta -o ./mapping_contig_15937_from_prelim_assembly.fasta
+
+vulcan -r ~/2023/aligning_RNA_seq_to_UTM_Trep_hap1/indexed_UTM_Trep_v1_hap1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i mapping_contig_15937_from_prelim_assembly.fasta -w ./mapping_contig_15937_from_prelim_assembly_to_UTM_Trep_v1_hap1/ -o output_mapping_contig_15937_from_prelim_assembly_to_UTM_Trep_v1_hap1 -t 64 -ont
+
+
 
 
 
