@@ -119,7 +119,8 @@ vulcan -r ~/2023/aligning_RNA_seq_to_UTM_Trep_hap1/indexed_UTM_Trep_v1_hap1/GCA_
     # Note however that because there are two subgenomes, assembled contigs cannot be used for characterizing indels, because the assembler doesn't know which reads come from which subgenome
     # Thus I need to carry out structural variant calling with sniffles
 
-sniffles -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/all_green_SUP_called_merged/SUP_vulcan_green/vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam -v ./green_against_UTM_hap1.vcf --reference /Volumes/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -t 64
+sniffles -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/all_green_SUP_called_merged/SUP_vulcan_green/vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam -v ./green_against_UTM_hap1.vcf --reference /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -t 64
+sniffles -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/purple/all_purple_SUP_called_merged/SUP_vulcan_purple/vulcan_purple_SUP_against_UTM_Trepv1hap1_90.bam -v ./purple_against_UTM_hap1.vcf --reference /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -t 64
 
 
 
