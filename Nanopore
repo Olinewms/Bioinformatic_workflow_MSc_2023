@@ -66,7 +66,7 @@ samtools index vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam
 [M::mm_idx_stat::35.712*2.33] distinct minimizers: 41771855 (46.78% are singletons); average occurrences: 4.497; average spacing: 5.314; total length: 998247995
 Done (346417 reads mapped (90.25%), 37424 reads not mapped, 1515154 lines written)(elapsed: 160m, 36 r/s)
 
-# At this point you can load the .bam files (separetly?) into IGV with the hap1 ref. seq and inspect the chr8 TrTo ROI (~CM061893.1:45,047,877-45,054,980)
+# At this point you can load the .bam files (separetly) into IGV with the hap1 ref. seq and inspect the chr8 TrTo ROI (~CM061893.1:45,047,877-45,054,980)
 # Loading both bam files will probably crash your computer; therefore if you assemble each into contigs first beforehand, this should be less computationally intensive for IGV
 
 # Then I need to do structural variant calling on these 2 bam files (will give two vcf files (each with only one sample column), and then I can load both of these into IGV)
@@ -127,4 +127,31 @@ sniffles -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/purple/all_purp
 
 # I need to redo the green assembly using the SUP called reads and few new parameters
 flye --nano-hq ../all_green_SUP_called_merged/filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz -o assembly2 -g 1g -t 64 -i 5 --read-error 0.03 --meta --keep-haplotypes
+        Total length:   1538734569
+        Fragments:      46165
+        Fragments N50:  113564
+        Largest frg:    4383983
+        Scaffolds:      0
+        Mean coverage:  25
+
+# Then search the new assembly for the contig holding the TrRED LEAF deletion allele
+vulcan -r /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/Flye_second_assembly_w_SUP_reads/assembly2/assembly.fasta -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/mapping_chr8_ROI_downstream_of_TrRED_UTM_Trep_v1_hap1_to_green_fastcalled_prelim_assembly/mapping_contig_15937_from_prelim_assembly.fasta -w ./mapping_contig_15937_from_prelim_assembly_to_SUP_green_assembly/ -o output_mapping_contig_15937_from_prelim_assembly_to_SUP_green_assembly -t 64 -ont
+
+# contig_7790 was a match
+# I then extracted it from the new assembly
+seqkit grep -f ./contig_7790 _name.txt ../Flye_second_assembly_w_SUP_reads/assembly2/assembly.fasta -o ./contig_7790_from_SUP_green_assembly.fasta
+
+# Then mapped it to UTM_hap1 reference genome
+vulcan -r ~/2023/aligning_RNA_seq_to_UTM_Trep_hap1/indexed_UTM_Trep_v1_hap1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/finding_TrRED_contig_in_SUP_green_assembly/contig_7790_from_SUP_green_assembly.fasta -w ./mapping_contig_7790_from_SUP_green_assembly_to_UTM_hap1/ -o output_mapping_contig_7790_from_SUP_green_assembly_to_UTM_hap1 -t 64 -ont
+
+# Turned out that contig_7790 is actually far smaller than contig_15937, indicating that new assembly using the SUP reads, --nano-hq, --read-error 0.03 and --meta parameters is actually worse than the preliminary
+# green assembly using the Fastcalled reads... I'm unsure why this is the case
+
+# cuteSV trial
+cuteSV <sorted.bam> <reference.fa> <output.vcf> <work_dir>
+samtools sort vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam > vulcan_green_SUP_against_UTM_Trepv1hap1_90_sorted.bam
+
+
+
+
 
