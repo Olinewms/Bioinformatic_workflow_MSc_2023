@@ -117,7 +117,7 @@ vulcan -r ~/2023/aligning_RNA_seq_to_UTM_Trep_hap1/indexed_UTM_Trep_v1_hap1/GCA_
 # When I viewed this aligment in IGV, I found that contig_15937 had a gap from 45017416 to 45080182
 # This equates to a 62766 bp deletion in TrTo ch8
     # Note however that because there are two subgenomes, assembled contigs cannot be used for characterizing indels, because the assembler doesn't know which reads come from which subgenome (although --keep-haplotypes was used, which may account for this issue) 
-    # Thus I need to carry out structural variant calling with sniffles
+    # Thus I need to carry out structural variant calling, and need to just use primary alignments of reads with high MAPQ scores when determining the size of the indel
 
 sniffles -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/green/all_green_SUP_called_merged/SUP_vulcan_green/vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam -v ./green_against_UTM_hap1.vcf --reference /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -t 64
 sniffles -i /Volumes/archive/brownfieldlab/Nanopore/white_clover/purple/all_purple_SUP_called_merged/SUP_vulcan_purple/vulcan_purple_SUP_against_UTM_Trepv1hap1_90.bam -v ./purple_against_UTM_hap1.vcf --reference /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna -t 64
