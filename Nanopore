@@ -148,6 +148,7 @@ vulcan -r ~/2023/aligning_RNA_seq_to_UTM_Trep_hap1/indexed_UTM_Trep_v1_hap1/GCA_
 # green assembly using the Fastcalled reads... I'm unsure why this is the case
 
 # cuteSV trial
+# Look into whether of not ploidy will be taken into account with cuteSV
 cuteSV ../../green/all_green_SUP_called_merged/SUP_vulcan_green/vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam ~/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna output_cuteSV_green_against_UTM_hap1 ./ --threads 64 --max_cluster_bias_INS 100 --diff_ratio_merging_INS 0.3 --max_cluster_bias_DEL 100 --diff_ratio_merging_DEL 0.3samtools sort vulcan_green_SUP_against_UTM_Trepv1hap1_90.bam > vulcan_green_SUP_against_UTM_Trepv1hap1_90_sorted.bam
 cuteSV ../../purple/all_purple_SUP_called_merged/SUP_vulcan_purple/vulcan_purple_SUP_against_UTM_Trepv1hap1_90.bam ~/2023/Reference_genomes/Trifolium_repens/UTM_Trep_v1.0_hap1/ncbi_dataset/data/GCA_030914245.1/GCA_030914245.1_UTM_Trep_v1.0_hap1_genomic.fna output_cuteSV_purple_against_UTM_hap1 ./ --threads 64 --max_cluster_bias_INS 100 --diff_ratio_merging_INS 0.3 --max_cluster_bias_DEL 100 --diff_ratio_merging_DEL 0.3
 # Note that the .bam file doesn't need to be sorted
