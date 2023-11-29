@@ -155,7 +155,10 @@ cuteSV ../../purple/all_purple_SUP_called_merged/SUP_vulcan_purple/vulcan_purple
 # After running this and loading the vcf files in with the other alignment files, it was found that cuteSV was able to characterise a 
 # breakend point at CM061893.1:45,017,417. Interestingly, there was not MATE ID for this breakend, indicating an arbitrary rearrangement event with undifined adjacencies
 
+# I then opened the vcf file with 'less' and searched for the breakend ID's (cuteSV.BND.16041 and cuteSV.BND.16042) and found the following information:
+CHROM 			POS 			ID 						REF(s)	ALT 					QUAL 	FILTER 	INFO
+CM061893.1      45017417        cuteSV.BND.16041        c       N]CM061894.1:19851877]  .       PASS    PRECISE;SVTYPE=BND;RE=7;RNAMES=NULL     GT:DR:DV:PL:GQ  ./.:.:7:.,.,.:.
+CM061893.1      45017417        cuteSV.BND.16042        c       N]CM061894.1:19854780]  .       PASS    PRECISE;SVTYPE=BND;RE=6;RNAMES=NULL     GT:DR:DV:PL:GQ  ./.:.:6:.,.,.:.
 
-
-
+# This means that the softclipped regions beginning at CM061893.1:45017417 (and spanning to the right)  
 
