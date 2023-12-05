@@ -168,5 +168,6 @@ CM061893.1      45017417        cuteSV.BND.16042        c       N]CM061894.1:198
 # When comparing the promoter region of TrRED LEAF across UTM_hap1, purple F2s and the 'Crau' ref (TrRv5), its clear that there is more homology between 'Crau' and purple F2s
 # Therefore I decided to map my longreads to TrRv5 ref genome
 vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta -i filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz -w ./SUP_vulcan_green_TrRv5/ -o vulcan_green_SUP_against_TrRv5 -t 64 -ont
+vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_genomes/Trifolium_repens/Trifolium_repens/TrR.v5.fasta -i filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz -w ./SUP_vulcan_purple_TrRv5/ -o vulcan_purple_SUP_against_TrRv5 -t 64 -ont
 
 
