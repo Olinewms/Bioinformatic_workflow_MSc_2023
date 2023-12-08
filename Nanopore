@@ -172,3 +172,4 @@ vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_ge
 
 # I then mapped my RNA-Seq data to UTM_hap2 (TrRED LEAF absent) and compared this to the mapping to UTM_hap1 (TrRED LEAF present) to look to see if there were co-segregating SNPs in both circumstances
 
+# I then mapped green prelim assembly contig_15937 to the Wang et al (2023) reference genome using vulcan
