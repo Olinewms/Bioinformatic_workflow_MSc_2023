@@ -173,3 +173,13 @@ vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_ge
 # I then mapped my RNA-Seq data to UTM_hap2 (TrRED LEAF absent) and compared this to the mapping to UTM_hap1 (TrRED LEAF present) to look to see if there were co-segregating SNPs in both circumstances
 
 # I then mapped green prelim assembly contig_15937 to the Wang et al (2023) reference genome using vulcan
+# This was done to which genotype this assembly corresponds to the most out of the other reference genomes than my two F2 long-read datasets
+# It is most similar to TrRv5 in terms of orientation of the ROI
+
+# Then I transformed filtered SUP called purple reads into a blastn database and searched it using TrRED LEAF 
+# Because there are only three reads that map to it (when viewing .bam alignments in IGV), I should see only three reads in blastn output if there is only a single R locus MYB in the purple genotype
+seqtk seq -a filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz > filtered_min1kb_min10qScore_all_SUP_passed_purple.fasta
+
+
+
+
