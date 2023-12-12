@@ -177,9 +177,13 @@ vulcan -r /Volumes/archive/userdata/student_users/olivernewman/2023/Reference_ge
 # It is most similar to TrRv5 in terms of orientation of the ROI
 
 # Then I transformed filtered SUP called purple reads into a blastn database and searched it using TrRED LEAF 
-# Because there are only three reads that map to it (when viewing .bam alignments in IGV), I should see only three reads in blastn output if there is only a single R locus MYB in the purple genotype
+# Because there are only three reads that map to it (when viewing .bam alignments in IGV), I should see only three reads in the blastn output if there is only a single R locus MYB gene in the purple genotype
 seqtk seq -a filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz > filtered_min1kb_min10qScore_all_SUP_passed_purple.fasta
-
+makeblastdb -in filtered_min1kb_min10qScore_all_SUP_passed_purple.fasta -dbtype nucl -out blastdb_filtered_SUP_called_purple
+mkdir db_blastdb_filtered_SUP_called_purple
+mv blastdb_filtered_SUP_called_purple.* ./db_blastdb_filtered_SUP_called_purple/
+blastn -query Tr_RED_LEAF_complete_cds.fasta -db /Volumes/archive/brownfieldlab/Nanopore/white_clover/purple/all_purple_SUP_called_merged/db_blastdb_filtered_SUP_called_purple/blastdb_filtered_SUP_called_purple -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -num_threads 64 -out blastn_TrREDLEAF_cds.txt
+# There were a total of 28 high-confidence hits, suggesting that TrRED LEAF has 1 or more copies in a different region of the genome
 
 
 
