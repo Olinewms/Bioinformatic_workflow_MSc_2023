@@ -183,7 +183,37 @@ makeblastdb -in filtered_min1kb_min10qScore_all_SUP_passed_purple.fasta -dbtype 
 mkdir db_blastdb_filtered_SUP_called_purple
 mv blastdb_filtered_SUP_called_purple.* ./db_blastdb_filtered_SUP_called_purple/
 blastn -query Tr_RED_LEAF_complete_cds.fasta -db /Volumes/archive/brownfieldlab/Nanopore/white_clover/purple/all_purple_SUP_called_merged/db_blastdb_filtered_SUP_called_purple/blastdb_filtered_SUP_called_purple -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore salltitles" -num_threads 64 -out blastn_TrREDLEAF_cds.txt
-# There were a total of 28 high-confidence hits, suggesting that TrRED LEAF has 1 or more copies in a different region of the genome
+# There were a total of 28 high-confidence hits. Because there were only ~4 reads mapping to the TrRED LEAF gene via UTM_hap1 mapping, this suggested that TrRED LEAF has 1 or more copies in a different region of the genome
+
+# This result prompted me to generate a purple flye assembly using the filtered SUP basecalled purple longreads, and then search this assembly for the TrRED LEAF cds
+flye --nano-raw ../filtered_min1kb_min10qScore_all_SUP_passed_purple.fastq.gz -o assembly1_purple -g 1g -t 64 -i 4 --keep-haplotypes
+blat ./flye_assembly_purple/assembly1_purple/assembly.fasta Tr_RED_LEAF_complete_cds.fasta Blat_output_TrREDLEAF_against_purple_SUP_flye_assembly.txt
+
+# This blat search however stongly suggested there is just a single TrRED LEAF MYB gene in the purple genotype
+# Then I found that within the purple /assembly1_purple/assembly.fasta, TrRED LEAF was held within edge_4556
+# I then extracted purple edge_4556 and green first assembly contig_15937 and put them into seperate fasta files 
+# I then annotated these fasta files to see differences in structure. In theory, because the nanopore-sequenced purple F2 is heterozygous for the 
+# presence allele of TrRED LEAF, purple edge_4557 should be 'identical' to contig_15937
+    # To check this I blast-aligned contig_15937 (311520 bp) to edge_4557 (119411 bp)
+    # This gave 73% Query-cover, 98.23% Percentage identity and an Evalue of 0, indicating high similarity, yet definitly still lots of variation present
+
+
+# In the T. occindentale reference genome, the region between ND4 and ADP-ribo is only ~11 kb, whereas in my purple plants (edge_4556) it is ~44 kb.
+# Interestingly, the distance between ND4 and ADP-ribo in green contig_15937 is almost identical to the respective distance observed in the T. occindentale reference genome (~11 kb)
+# This suggests that perhaps TrRED LEAF (Rl) didn't originate from this region in T. occindentale, or that the this region is highly variable even in the T. occindentale progenitor genomes
+
+# When annotating purple edge_4556, there was a large region (~32 kb) between NUCLEAR DEFECTIVE 4-like and the beginning of TrRED LEAF
+# Therefore I decided to inspect this region for transposable elements using Inpactor2 software
+Inpactor2/Inpactor2.py -f ../32kb_region_inbetween_ND4_and_TrREDLEAF.fasta -o inpactor2_workingDir/ -t 32 -c no
+# This showed that there was a large 11.5 kb SIRE LTR in between ND4 and the beginning of TrRED LEAF in my purple F2 plants
+# This LTR is not present in UTM_hap1 ROI, meaning it could be unique my my purple F2 plants
+# It was also not present in green contig_15937
+# It was however present in the same genomic location in the GFL-007 ecotype Florida chromosome 8 reference sequence
+# Note that there was no LTRs detected inbetween TrRED LEAF and ADP-ribo in edge_4556
+
+
+
+
 
 
 
