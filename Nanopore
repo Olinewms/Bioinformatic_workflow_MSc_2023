@@ -216,6 +216,11 @@ mkdir Flye_third_assembly_w_SUP_reads
 flye --nano-raw ./all_green_SUP_called_merged/filtered_min1kb_min10qScore_all_SUP_passed_green.fastq.gz -o ./Flye_third_assembly_w_SUP_reads/assembly3_green -g 1g -t 64 -i 4 --keep-haplotypes
 
 
+# Then, to try and figure out whether the nanopore sequennced purple plant is definitly het for TrRED LEAF, I needed to try find at least 3 different contigs containing the stable flanking genes; ND4 and ADP-ribosylation factor
+blat ../flye_assembly_purple/assembly1_purple/assembly.fasta NUCLEAR_DEFECTIVE_4_like_MSTRG47455.fasta Blat_output_ND4_against_purple_SUP_flye_assembly.txt
+blat ../flye_assembly_purple/assembly1_purple/assembly.fasta ADP_ribosyl.fasta Blat_output_ADP_ribo_against_purple_SUP_flye_assembly.txt
+
+
 
 
 
