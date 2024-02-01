@@ -231,6 +231,22 @@ blat ../flye_assembly_purple/assembly1_purple/assembly.fasta ADP_ribosyl.fasta B
 # Then I imported these edges into genious prime and used Blast to search for the flanking genes (like ADP and ND4)
 blat ../Flye_third_assembly_w_SUP_reads/assembly3_green/assembly.fasta ADP_ribosyl.fasta Blat_output_ADP_ribo_against_green_SUP_flye_assembly.txt
 # This gave four full high confidence hits likely containing a full ADP ribosylation factor gene; which makes sense in that each homeologue has two versions (giving four in total)
+# A pairwise alignment from the ADP ribosylation factor sequence extracted from all four of these edges (not the contigs, but edges) shows that edge_14743 and edge_14745 are from the same subgenome
+# and edge_25974 and edge_25971 are from the other subgenome
+
+# Then the next step was to use Inpactor2 to search these edges for transposons
+conda activate Inpactor2
+/Volumes/userdata/student_users/olivernewman/2023/Inpactor2/Inpactor2/Inpactor2.py -f ../Flye_third_assembly_w_SUP_reads/assembly3_green/misc_edges/all_4_green_SUP_edges_containing_ADP_rib.fasta -o ../inpactor2_searches/ -t 32 -c no
+
+# Then I searched the first green Flye assembly (that used fast-called reads) for ADP-ribosylation factor to see if there were cleaner congregations of edges in this assembly
+blat ../Flye_first_assembly/assembly1/assembly.fasta ADP_ribosyl.fasta Blat_output_ADP_ribo_against_green_first_flye_fast_assembly.txt
+# This again gave two alleles of two homeologues (one putatively from each subgenome)
+# One of the putative subgenomes had a string of edges (containing edge_29574 and edge_29575) joined together nicely with no more than 2 alleles per region
+# I then annotated and searched these two edges for transposons
+/Volumes/userdata/student_users/olivernewman/2023/Inpactor2/Inpactor2/Inpactor2.py -f ./Flye_first_assembly/assembly1/misc_edges/all_edges_surrounding_ADP_rib_in_one_subgenome.fasta -o ./inpactor2_searches/searching_edges_from_first_green_assembly/ -t 32 -c no
+# This showed that there was no transposons between ADP ribosylation factor and ND4, and the minimal distance between these two genes suggested this region (containing these edges) was from the T. pal subgenome
+
+
 
 
 
