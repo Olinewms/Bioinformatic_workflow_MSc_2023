@@ -219,7 +219,18 @@ flye --nano-raw ./all_green_SUP_called_merged/filtered_min1kb_min10qScore_all_SU
 # Then, to try and figure out whether the nanopore sequennced purple plant is definitly het for TrRED LEAF, I needed to try find at least 3 different contigs containing the stable flanking genes; ND4 and ADP-ribosylation factor
 blat ../flye_assembly_purple/assembly1_purple/assembly.fasta NUCLEAR_DEFECTIVE_4_like_MSTRG47455.fasta Blat_output_ND4_against_purple_SUP_flye_assembly.txt
 blat ../flye_assembly_purple/assembly1_purple/assembly.fasta ADP_ribosyl.fasta Blat_output_ADP_ribo_against_purple_SUP_flye_assembly.txt
+# I just focussed on the ADP_ribosylation factor as a stable flanking gene as it only had one copy in each subgenome
+# There were two homeologues present, each with two alleles, giving a total of four alleles (and thus four separate flye-assembled edges)
+# These the genic region containing the ADP gene in each of these edges was cut out and a pairwize alignment was made from all four of these
+# The alignment shows that the two putatively T. occ subgenome edges are similar to each other and distinct from the two from the putatively T. pal subgenome
+# and similarly the two putatively T. pal subgenome edges are similar to each other and distinct from the two from the putatively T. occ subgenome
+# This confirms that TrRED LEAF is heterozygous in the plant used to make the purple Flye assembly
 
+# Then I wanted to see if there were transposons were TrRED LEAF etc should be in the green Flye assembly
+# I used ADP ribosylation factor again to find the edges (within the third green Flye assembly that used SUP reads) that contain this genic region of interest
+# Then I imported these edges into genious prime and used Blast to search for the flanking genes (like ADP and ND4)
+blat ../Flye_third_assembly_w_SUP_reads/assembly3_green/assembly.fasta ADP_ribosyl.fasta Blat_output_ADP_ribo_against_green_SUP_flye_assembly.txt
+# This gave four full high confidence hits likely containing a full ADP ribosylation factor gene; which makes sense in that each homeologue has two versions (giving four in total)
 
 
 
