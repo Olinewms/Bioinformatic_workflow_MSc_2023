@@ -88,3 +88,10 @@ sed ':a; $!N; /^>/!s/\n\([^>]\)/\1/; ta; P; D' Trinity_EdgeR_sig_DEG_noBlastHits
 # This command could also be used:
 seqtk seq -l 0 input_file > output_file
 
+
+
+# After doing the BLASTn search, Trinity IDs that had hits that were labelled "uncharacterized" were listed in a text file, and then their seqs were extracted from the 6_sample Trinity.fasta
+seqkit grep -f all_2023_DEG_de_novo_edgeR_blastn_uncharacterised_hits.txt /Volumes/scratch/brownfieldlab/Ollie/2023_scratch/trinity_de_novo_6_samples/Trinity.fasta -o Trinity_uncharacterized_DEGs_2023.fasta
+# Then I did a seperate BLASTn search of this multifasta
+
+
