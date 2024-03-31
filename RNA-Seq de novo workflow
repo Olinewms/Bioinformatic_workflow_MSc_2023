@@ -91,7 +91,30 @@ seqtk seq -l 0 input_file > output_file
 
 
 # After doing the BLASTn search, Trinity IDs that had hits that were labelled "uncharacterized" were listed in a text file, and then their seqs were extracted from the 6_sample Trinity.fasta
-seqkit grep -f all_2023_DEG_de_novo_edgeR_blastn_uncharacterised_hits.txt /Volumes/scratch/brownfieldlab/Ollie/2023_scratch/trinity_de_novo_6_samples/Trinity.fasta -o Trinity_uncharacterized_DEGs_2023.fasta
+# I made a python script:
+______________________________________________________________________________________________________________________________________________________
+from Bio import SeqIO
+
+pattern_file = "/Volumes/archive/userdata/student_users/olivernewman/2024/searching_for_de_novo_DEG_uncharacterized/all_2023_DEG_de_novo_edgeR_blastn_uncharacterised_hits.txt"
+fasta_file = "/Volumes/scratch/brownfieldlab/Ollie/2023_scratch/trinity_de_novo_6_samples/Trinity.fasta"
+output_file = "extracted_sequences.fasta"
+
+# Read the pattern file and extract sequence IDs in the specified order
+with open(pattern_file, 'r') as f:
+    pattern = [line.strip() for line in f]
+
+# Read the fasta file and store sequences in a dictionary
+sequences_dict = {}
+for record in SeqIO.parse(fasta_file, "fasta"):
+    sequences_dict[record.id] = record
+
+# Extract sequences from the dictionary based on the pattern
+sequences = [sequences_dict[seq_id] for seq_id in pattern if seq_id in sequences_dict]
+
+# Write the extracted sequences to the output file
+SeqIO.write(sequences, output_file, "fasta")
+______________________________________________________________________________________________________________________________________________________
+# This made sure the order of the extracted sequences were the same as what I specified in the pattern .txt file
 # Then I did a seperate BLASTn search of this multifasta
 
 
