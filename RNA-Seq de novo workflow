@@ -1,15 +1,23 @@
 # Constructing 6-sample transcriptome (samples 1, 3, 5, 6, 8, 10; 3 no-pigment samples and 3 max-pigment samples)
 Trinity --seqType fq --max_memory 64G --left /Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R1s/Sample_1_R1_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R1s/Sample_3_R1_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R1s/Sample_5_R1_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R1s/Sample_6_R1_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R1s/Sample_8_R1_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R1s/Sample_10_R1_Paired_trimmed.fastq --right /Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R2s/Sample_1_R2_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R2s/Sample_3_R2_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R2s/Sample_5_R2_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R2s/Sample_6_R2_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R2s/Sample_8_R2_Paired_trimmed.fastq,/Volumes/scratch/brownfieldlab/Ollie/2023/Paired_R2s/Sample_10_R2_Paired_trimmed.fastq --CPU 32 --output trinity_de_novo_6_samples --verbose
 
-# Mapping paired-trimmed fastq files to 6-sample transcriptome, and then stimating abundance of reads per isoform
+# Mapping paired-trimmed fastq files to 6-sample transcriptome, and then estimating abundance of reads per isoform
 # The following command was run for each of the 10 samples
+# In each RSEM output directory (one per each of the 10 samples), there is a RSEM_*sample_ID*.isoforms.results file and a RSEM.genes.results file
+# I used the RSEM_*sample_ID*.isoforms.results files for subsequent matrix construction
 /Volumes/archive/userdata/student_users/olivernewman/Downloads/trinityrnaseq-v2.14.0/util/align_and_estimate_abundance.pl --transcripts trinity_de_novo_6_samples/Trinity.fasta --seqType fq --left Paired_R1s_scratch/Sample_1_R1_Paired_trimmed.fastq --right Paired_R2s_scratch/Sample_1_R2_Paired_trimmed.fastq --est_method RSEM --aln_method bowtie2 --trinity_mode --prep_reference --output_dir RSEM_sample_1_using_6SampleTranscriptome
 
-# Generating a count matrix using RSEM
+# Generating a count matrix using RSEM method
+# The resulting matrix (RSEM.isoform.counts.matrix) is what was used in my edgeR script
 /Volumes/archive/userdata/student_users/olivernewman/Downloads/trinityrnaseq-v2.14.0/util/abundance_estimates_to_matrix.pl --est_method RSEM --gene_trans_map /Volumes/archive/scratch/brownfieldlab/Ollie/2023/trinity_de_novo_6_samples/Trinity.fasta.gene_trans_map --name_sample_by_basedir RSEM_sample_1_using_6SampleTranscriptome/RSEM_S1.isoforms.results RSEM_sample_2_using_6SampleTranscriptome/RSEM_S2.isoforms.results RSEM_sample_3_using_6SampleTranscriptome/RSEM_S3.isoforms.results RSEM_sample_4_using_6SampleTranscriptome/RSEM_S4.isoforms.results RSEM_sample_5_using_6SampleTranscriptome/RSEM_S5.isoforms.results RSEM_sample_6_using_6SampleTranscriptome/RSEM_S6.isoforms.results RSEM_sample_7_using_6SampleTranscriptome/RSEM_S7.isoforms.results RSEM_sample_8_using_6SampleTranscriptome/RSEM_S8.isoforms.results RSEM_sample_9_using_6SampleTranscriptome/RSEM_S9.isoforms.results RSEM_sample_10_using_6SampleTranscriptome/RSEM_S10.isoforms.results
 
+# The R markdown edgeR script is located /Volumes/olivernewman/2023/DESeq2_limmaVoom_EdgeR_&_WGCNA_scripts/DE_EdgeR_script.Rmd
+# This script outputs all DEGs (/Volumes/olivernewman/2023/DEG_data/EdgeR_outputs/De_novo_mapping_sigDEGs/EdgeR_de_novo_dge.csv) and all significantly DEGs (/Volumes/olivernewman/2023/DEG_data/EdgeR_outputs/De_novo_mapping_sigDEGs/EdgeR_de_novo_SIG_dge.csv)
+# The EdgeR_de_novo_SIG_dge.csv was used as the basis for subsequent analyses/annotations
 
-# Extracting 
+
+
+# Extracting the transcript sequences (fasta) from all the significantly DE transcripts determined by the DE_EdgeR_script.Rmd
 seqkit grep -f /Volumes/archive/userdata/student_users/olivernewman/2023/DESeq2_scripts_and_outputs/De_novo_sig_results/TRINITY_sig_up_genes_IDs.txt trinity_de_novo_6_samples/Trinity.fasta -o Trinity_sig_up_gene_seqs.fasta
 seqkit grep -f /Volumes/archive/userdata/student_users/olivernewman/2023/DESeq2_scripts_and_outputs/De_novo_sig_results/TRINITY_sig_down_genes_IDs.txt trinity_de_novo_6_samples/Trinity.fasta -o Trinity_sig_down_gene_seqs.fasta
 
@@ -17,13 +25,12 @@ seqkit grep -f TRINITY_sig_up_isoforms.txt trinity_de_novo_6_samples/Trinity.fas
 seqkit grep -f TRINITY_sig_down_isoforms.txt trinity_de_novo_6_samples/Trinity.fasta -o Trinity_sig_down_isoform_seqs.fasta
 
 
-
 # Using Transdecoder to begin annotation of Trinity.fasta
 # This was done in a conda environment with TransDecoder v-5.7.0 installed
 TransDecoder.LongOrfs -t Trinity.fasta
 
-  # Internal means an AA string was found without a stop nor start codon
-  # Complete meain an AA string was found with a stop and start codon
+  # 'Internal' means an AA string was found without a stop nor start codon
+  # 'Complete' means an AA string was found with a stop and start codon
   # 3prime_partial means that the 3prime region of the gene is incomplete
   # 5prime_partial means that the 5prime region of the gene is incomplete
   
